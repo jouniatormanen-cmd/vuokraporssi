@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="fi">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Vuokrapörssi 0.5 – Supabase-testi</title>
+<style>
+body{font-family:Arial,sans-serif;margin:0;background:#f4f7f5;color:#17251c}header{background:#176b3a;color:#fff;padding:24px;text-align:center}
+main{max-width:1000px;margin:auto;padding:18px}.box{background:#fff;border-radius:14px;padding:18px;margin:16px 0;box-shadow:0 2px 10px #0001}
+.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}label{font-weight:700;display:block}input,select,textarea{box-sizing:border-box;width:100%;padding:10px;margin-top:5px;border:1px solid #bbb;border-radius:8px}
+textarea{min-height:90px}.full{grid-column:1/-1}button{background:#176b3a;color:white;border:0;border-radius:9px;padding:11px 16px;font-weight:700;cursor:pointer}.msg{margin-top:12px}.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px}
+.card{border:1px solid #ddd;border-radius:12px;overflow:hidden;background:#fff}.card img{width:100%;height:180px;object-fit:cover}.card .p{padding:12px}.price{font-size:1.2rem;font-weight:800;color:#176b3a}
+.gallery{display:flex;gap:6px;overflow:auto}.gallery img{width:72px;height:55px;object-fit:cover;border-radius:6px}
+small{color:#59645d}@media(max-width:650px){.grid{grid-template-columns:1fr}.full{grid-column:auto}}
+</style>
+</head><body>
+<header><h1>Vuokrapörssi 0.5</h1><div>Yhteisen tietokannan ja kuvien tallennuksen testi</div></header>
+<main>
+<div class="box"><h2>Lisää ilmoitus</h2>
+<div class="grid">
+<label>Otsikko *<input id="title"></label>
+<label>Kategoria *<select id="category"><option value="">Valitse</option><option>Asunnot ja majoitus</option><option>Ajoneuvot</option><option>Peräkärryt ja kuljetus</option><option>Työkalut ja koneet</option><option>Urheilu ja harrastus</option><option>Juhlat ja tapahtumat</option><option>Tilat ja varastot</option><option>Muut</option></select></label>
+<label class="full">Kuvaus *<textarea id="description"></textarea></label>
+<label>Hinta € *<input id="price" type="number" min="0" step="0.01"></label>
+<label>Hintajakso<select id="unit"><option>päivä</option><option>viikko</option><option>kuukausi</option><option>tunti</option></select></label>
+<label>Paikkakunta *<input id="city"></label><label>Postinumero<input id="postal"></label>
+<label>Saatavilla alkaen<input id="from" type="date"></label><label>Saatavilla asti<input id="to" type="date"></label>
+<label>Yhteyshenkilö *<input id="name"></label><label>Sähköposti tai puhelin *<input id="contact"></label>
+<label class="full">Kuvat (enintään 10)<input id="images" type="file" accept="image/*" multiple><small>Kuvat tallennetaan Supabase Storageen.</small></label>
+</div>
+<p><button id="save">Lisää ilmoitus</button></p><div id="msg" class="msg"></div></div>
+<div class="box"><h2>Ilmoitukset</h2><div id="status">Ladataan…</div><div id="cards" class="cards"></div></div>
+</main>
+<script>
+const BASE="https://txairhtwoxwxlvppfjkn.supabase.co";
+const KEY="sb_publishable_yByUkSb2MVT51pfEVgBy4w_ylYydw0q";
+const H=()=>({"apikey":KEY});
+const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+async function load(){
+ const st=document.getElementById("status"),cards=document.getElementById("cards");st.textContent="Ladataan…";cards.innerHTML="";
+ try{
+  const r=await fetch(BASE+"/rest/v1/listings?select=*&order=created_at.desc",{headers:H()});
+  if(!r.ok)throw Error("HTTP "+r.status+" – "+await r.text());
+  const rows=await r.json();st.textContent=rows.length?rows.length+" ilmoitusta":"Ei vielä ilmoituksia.";
+  cards.innerHTML=rows.map(x=>{const ims=Array.isArray(x.images)?x.images:[];return '<article class="card">'+(ims[0]?'<img src="'+esc(ims[0])+'" alt="">':'')+'<div class="p"><h3>'+esc(x.title)+'</h3><div>'+esc(x.city||"")+'</div><p>'+esc(x.description||"")+'</p><div class="price">'+esc(x.price||0)+' € / '+esc(x.price_unit||"päivä")+'</div>'+(ims.length>1?'<div class="gallery">'+ims.slice(1).map(u=>'<img src="'+esc(u)+'" alt="">').join("")+'</div>':'')+'</div></article>'}).join("");
+ }catch(e){st.textContent="Ilmoitusten lataus epäonnistui: "+e.message}
+}
+async function upload(file,i){
+ const ext=(file.name.split(".").pop()||"jpg").replace(/[^a-z0-9]/gi,"").toLowerCase()||"jpg";
+ const path="listings/"+Date.now()+"-"+Math.random().toString(36).slice(2,9)+"-"+i+"."+ext;
+ const r=await fetch(BASE+"/storage/v1/object/listing-images/"+path,{method:"POST",headers:{...H(),"Content-Type":file.type||"application/octet-stream","x-upsert":"false"},body:file});
+ if(!r.ok)throw Error("Kuvan lataus epäonnistui: "+await r.text());
+ return BASE+"/storage/v1/object/public/listing-images/"+path;
+}
+document.getElementById("save").onclick=async()=>{
+ const g=id=>document.getElementById(id),msg=g("msg"),btn=g("save");
+ if(!g("title").value.trim()||!g("category").value||!g("description").value.trim()||!g("price").value||!g("city").value.trim()||!g("name").value.trim()||!g("contact").value.trim()){msg.textContent="Täytä kaikki tähdellä merkityt kentät.";return}
+ if(g("from").value&&g("to").value&&g("from").value>g("to").value){msg.textContent="Loppupäivä ei voi olla ennen alkupäivää.";return}
+ const files=[...g("images").files].slice(0,10);btn.disabled=true;msg.textContent="Tallennetaan…";
+ try{
+  const urls=[];for(let i=0;i<files.length;i++)urls.push(await upload(files[i],i));
+  const c=g("contact").value.trim(),email=c.includes("@");
+  const row={title:g("title").value.trim(),category:g("category").value,description:g("description").value.trim(),price:Number(g("price").value),city:g("city").value.trim(),postal_code:g("postal").value.trim(),price_unit:g("unit").value,available_from:g("from").value||null,available_to:g("to").value||null,reserved_dates:[],images:urls,contact_name:g("name").value.trim(),contact_email:email?c:"",contact_phone:email?"":c,status:"active",updated_at:new Date().toISOString()};
+  const r=await fetch(BASE+"/rest/v1/listings",{method:"POST",headers:{...H(),"Content-Type":"application/json","Prefer":"return=representation"},body:JSON.stringify(row)});
+  if(!r.ok)throw Error("Ilmoituksen tallennus epäonnistui: "+await r.text());
+  msg.innerHTML="<b>✓ Ilmoitus tallennettu Supabaseen.</b>";["title","description","price","city","postal","from","to","name","contact","images"].forEach(id=>g(id).value="");g("category").value="";await load();
+ }catch(e){msg.textContent=e.message}finally{btn.disabled=false}
+};
+load();
+</script></body></html>
