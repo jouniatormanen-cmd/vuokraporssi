@@ -186,11 +186,13 @@ var categories=['Asunnot ja majoitus','Autot ja muut ajoneuvot','Peräkärryt ja
 var SUPABASE_URL='https://txairhtwoxwxlvppfjkn.supabase.co',SUPABASE_KEY='sb_publishable_yByUkSb2MVT51pfEVgBy4w_ylYydw0q';
 var listings=[],loadingListings=false,savingListing=false;
 var sbAuth=window.supabase?window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY,{auth:{detectSessionInUrl:true,persistSession:true,autoRefreshToken:true,flowType:'implicit'}}):null;var signedUser=null;
+var accountProfile={name:'',phone:''};
 function profileKey(){return signedUser?'vp_profile_'+signedUser.id:''}
-function getProfile(){if(!signedUser)return {name:'',phone:''};try{return JSON.parse(localStorage.getItem(profileKey())||'{}')}catch(e){return {name:'',phone:''}}}
+function getProfile(){return accountProfile||{name:'',phone:''}}
 function renderProfile(){var p=getProfile(),h=el('profileHeading'),t=el('profileContact');if(h)h.textContent=p.name||'Vuokrapörssi-käyttäjä';if(t)t.textContent=p.phone?'Puhelin '+p.phone:(p.name?'Puhelinnumeroa ei ole tallennettu.':'Nimeä ja puhelinnumeroa ei ole vielä tallennettu.')}
+async function loadProfile(){if(!signedUser){accountProfile={name:'',phone:''};renderProfile();return}var meta=signedUser.user_metadata||{};accountProfile={name:String(meta.name||meta.full_name||''),phone:String(meta.phone||'')};if(!accountProfile.name&&!accountProfile.phone){try{var old=JSON.parse(localStorage.getItem(profileKey())||'{}');if(old.name||old.phone){accountProfile={name:old.name||'',phone:old.phone||''};await sbAuth.auth.updateUser({data:{name:accountProfile.name,phone:accountProfile.phone}});localStorage.removeItem(profileKey())}}catch(e){console.warn('Vuokrapörssi: paikallisen profiilin siirto epäonnistui',e)}}renderProfile()}
 function toggleProfileEditor(open){if(!signedUser)return;var p=getProfile(),ed=el('profileEditor'),b=el('editProfileBtn');if(open){el('profileName').value=p.name||'';el('profilePhone').value=p.phone||'';el('profileMsg').textContent=''}ed.style.display=open?'block':'none';if(b)b.style.display=open?'none':''}
-function saveProfile(){if(!signedUser)return;var name=el('profileName').value.trim(),phone=el('profilePhone').value.trim();localStorage.setItem(profileKey(),JSON.stringify({name:name,phone:phone}));renderProfile();toggleProfileEditor(false)}
+async function saveProfile(){if(!signedUser||!sbAuth)return;var name=el('profileName').value.trim(),phone=el('profilePhone').value.trim(),msg=el('profileMsg');try{msg.textContent='Tallennetaan…';var r=await sbAuth.auth.updateUser({data:{name:name,phone:phone}});if(r.error)throw r.error;signedUser=r.data.user;accountProfile={name:name,phone:phone};localStorage.removeItem(profileKey());renderProfile();toggleProfileEditor(false)}catch(e){msg.textContent='Tallennus epäonnistui: '+e.message}}
 
 var finnishRegions={
 'Uusimaa':['Askola','Espoo','Hanko','Helsinki','Hyvinkää','Inkoo','Järvenpää','Karkkila','Kauniainen','Kerava','Kirkkonummi','Lapinjärvi','Lohja','Loviisa','Myrskylä','Mäntsälä','Nurmijärvi','Pornainen','Porvoo','Pukkila','Raasepori','Sipoo','Siuntio','Tuusula','Vantaa','Vihti'],
@@ -363,7 +365,7 @@ async function initAuth(){
  async function acceptSession(session,fromRedirect){
   if(!session||!session.user)return;
   signedUser=session.user;
-  var label=el('accountEmail');if(label)label.textContent=signedUser.email||'Kirjautunut';renderProfile();
+  var label=el('accountEmail');if(label)label.textContent=signedUser.email||'Kirjautunut';await loadProfile();
   if(handledUserId===signedUser.id)return;
   handledUserId=signedUser.id;
   closeLogin();
@@ -372,7 +374,7 @@ async function initAuth(){
  }
  sbAuth.auth.onAuthStateChange(function(event,session){
   signedUser=session?session.user:null;
-  var label=el('accountEmail');if(label)label.textContent=signedUser?signedUser.email:'Ei kirjautunut';renderProfile();
+  var label=el('accountEmail');if(label)label.textContent=signedUser?signedUser.email:'Ei kirjautunut';if(!signedUser){accountProfile={name:'',phone:''};renderProfile()}
   if(event==='SIGNED_OUT'){handledUserId=null;ownRows=[];return}
   if((event==='SIGNED_IN'||event==='INITIAL_SESSION')&&session&&session.user){
    setTimeout(function(){acceptSession(session,!!(location.hash.match(/access_token=/)||location.search.match(/code=/)))},0);
