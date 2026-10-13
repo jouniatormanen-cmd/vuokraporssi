@@ -196,9 +196,73 @@ function draftDB(){return new Promise(function(resolve,reject){var req=indexedDB
 async function saveDraft(d){var db=await draftDB();await new Promise(function(resolve,reject){var tx=db.transaction('drafts','readwrite'),req=tx.objectStore('drafts').put(d,'pending');tx.oncomplete=resolve;tx.onerror=function(){reject(tx.error)}});db.close()}
 async function getDraft(){var db=await draftDB();var d=await new Promise(function(resolve,reject){var tx=db.transaction('drafts','readonly'),req=tx.objectStore('drafts').get('pending');req.onsuccess=function(){resolve(req.result)};req.onerror=function(){reject(req.error)}});db.close();return d}
 async function clearDraft(){var db=await draftDB();await new Promise(function(resolve,reject){var tx=db.transaction('drafts','readwrite');tx.objectStore('drafts').delete('pending');tx.oncomplete=resolve;tx.onerror=function(){reject(tx.error)}});db.close()}
-async function publishPendingDraft(){if(!signedUser||!sbAuth)return;var d=await getDraft();if(!d)return;if((d.contact_email||'').toLowerCase()!==(signedUser.email||'').toLowerCase())return;try{var session=(await sbAuth.auth.getSession()).data.session;if(!session)return;var row=d.row;var urls=[];for(var i=0;i<d.images.length;i++){var v=d.images[i];urls.push(/^data:/i.test(v)?await uploadDataUrl(v,i):v)}row.images=urls;row.owner_id=signedUser.id;var res=await fetch(SUPABASE_URL+'/rest/v1/listings',{method:'POST',headers:{apikey:SUPABASE_KEY,Authorization:'Bearer '+session.access_token,'Content-Type':'application/json','Prefer':'return=representation'},body:JSON.stringify(row)});if(!res.ok)throw new Error(await res.text());await clearDraft();alert('Ilmoituksesi on julkaistu!');await loadListings();await loadOwnRows()}catch(e){alert('Sähköposti on vahvistettu, mutta ilmoituksen julkaisu epäonnistui: '+e.message+' Ilmoitusluonnos säilyy tällä laitteella.')}} 
+var draftPublishPromise=null;
+async function publishPendingDraft(){
+ if(draftPublishPromise)return draftPublishPromise;
+ draftPublishPromise=(async function(){
+  if(!signedUser||!sbAuth)return;
+  try{
+   var d=await getDraft();if(!d)return;
+   if((d.contact_email||'').trim().toLowerCase()!==(signedUser.email||'').trim().toLowerCase()){
+    console.warn('Vuokrapörssi: odottava luonnos kuuluu toiselle sähköpostille.');return;
+   }
+   var authResult=await sbAuth.auth.getSession();
+   if(authResult.error)throw authResult.error;
+   var session=authResult.data.session;
+   if(!session)throw new Error('Kirjautumisistuntoa ei löytynyt.');
+   var row=Object.assign({},d.row),urls=[];
+   for(var i=0;i<(d.images||[]).length;i++){
+    var v=d.images[i];urls.push(/^data:/i.test(v)?await uploadDataUrl(v,i):v);
+   }
+   row.images=urls;row.owner_id=signedUser.id;
+   var res=await fetch(SUPABASE_URL+'/rest/v1/listings',{
+    method:'POST',headers:{apikey:SUPABASE_KEY,Authorization:'Bearer '+session.access_token,
+    'Content-Type':'application/json','Prefer':'return=representation'},body:JSON.stringify(row)
+   });
+   if(!res.ok)throw new Error('Tietokanta ('+res.status+'): '+await res.text());
+   await clearDraft();
+   alert('Ilmoituksesi on julkaistu!');
+   await loadListings();await loadOwnRows();
+  }catch(e){console.error('Vuokrapörssi: luonnoksen julkaisu epäonnistui',e);
+   alert('Kirjautuminen onnistui, mutta ilmoituksen julkaisu epäonnistui: '+e.message+' Luonnos säilyy selaimessa.');}
+ })();
+ try{return await draftPublishPromise}finally{draftPublishPromise=null}
+}
 async function signOutVp(){if(sbAuth)await sbAuth.auth.signOut();signedUser=null;ownRows=[];showHome()}
-async function initAuth(){if(!sbAuth)return;var handled=false;async function acceptSession(session){if(!session||!session.user)return false;signedUser=session.user;var label=el('accountEmail');if(label)label.textContent=signedUser.email||'Kirjautunut';if(handled)return true;handled=true;closeLogin();await publishPendingDraft();await loadOwnRows();showAccount();return true}sbAuth.auth.onAuthStateChange(function(event,session){signedUser=session?session.user:null;var label=el('accountEmail');if(label)label.textContent=signedUser?signedUser.email:'Ei kirjautunut';if((event==='SIGNED_IN'||event==='INITIAL_SESSION')&&session&&session.user){setTimeout(function(){acceptSession(session)},0)}});try{var r=await sbAuth.auth.getSession();if(r.error)throw r.error;if(r.data&&r.data.session)await acceptSession(r.data.session)}catch(e){console.error('Vuokrapörssi auth:',e);alert('Kirjautumisen viimeistely epäonnistui: '+e.message)}if(location.hash.indexOf('error=')>=0){var p=new URLSearchParams(location.hash.slice(1));alert('Sähköpostilinkki ei toiminut: '+(p.get('error_description')||p.get('error')))}if(location.hash&&(/access_token=|error=/.test(location.hash))){history.replaceState(null,'',location.pathname+location.search)}}
+async function initAuth(){
+ if(!sbAuth){console.error('Vuokrapörssi: Supabase-kirjasto ei latautunut');return}
+ var handledUserId=null;
+ async function acceptSession(session,fromRedirect){
+  if(!session||!session.user)return;
+  signedUser=session.user;
+  var label=el('accountEmail');if(label)label.textContent=signedUser.email||'Kirjautunut';
+  if(handledUserId===signedUser.id)return;
+  handledUserId=signedUser.id;
+  closeLogin();
+  await publishPendingDraft();
+  if(fromRedirect)showAccount();
+ }
+ sbAuth.auth.onAuthStateChange(function(event,session){
+  signedUser=session?session.user:null;
+  var label=el('accountEmail');if(label)label.textContent=signedUser?signedUser.email:'Ei kirjautunut';
+  if(event==='SIGNED_OUT'){handledUserId=null;ownRows=[];return}
+  if((event==='SIGNED_IN'||event==='INITIAL_SESSION')&&session&&session.user){
+   setTimeout(function(){acceptSession(session,!!(location.hash.match(/access_token=/)||location.search.match(/code=/)))},0);
+  }
+ });
+ try{
+  var isReturn=/access_token=/.test(location.hash)||/[?&]code=/.test(location.search);
+  var r=await sbAuth.auth.getSession();
+  if(r.error)throw r.error;
+  if(r.data&&r.data.session)await acceptSession(r.data.session,isReturn);
+  else if(isReturn)console.warn('Vuokrapörssi: kirjautumislinkistä ei syntynyt istuntoa.');
+ }catch(e){console.error('Vuokrapörssi: kirjautumisen käsittely epäonnistui',e);
+  alert('Kirjautumisen viimeistely epäonnistui: '+e.message);
+ }
+ var params=new URLSearchParams(location.hash.slice(1));
+ if(params.has('error'))alert('Sähköpostilinkki ei toiminut: '+(params.get('error_description')||params.get('error')));
+ if(/access_token=|error=/.test(location.hash))history.replaceState(null,'',location.pathname+location.search);
+}
 function openLogin(){el('authModal').className='auth-modal open';el('authModal').setAttribute('aria-hidden','false');setTimeout(function(){el('loginEmail').focus()},80)}function closeLogin(){el('authModal').className='auth-modal';el('authModal').setAttribute('aria-hidden','true')}async function sendMagicLink(email){if(!sbAuth)throw new Error('Kirjautumispalvelu ei latautunut. Päivitä sivu.');var r=await sbAuth.auth.signInWithOtp({email:email,options:{emailRedirectTo:location.origin+location.pathname,shouldCreateUser:true}});if(r.error)throw r.error;return true}async function sendLoginLink(){var email=(el('loginEmail').value||'').trim();if(!email||email.indexOf('@')<1){el('authMsg').textContent='Kirjoita toimiva sähköpostiosoite.';return}el('authMsg').textContent='Lähetetään…';try{await sendMagicLink(email);el('authMsg').innerHTML='<b style="color:var(--green)">✓ Linkki lähetetty.</b> Tarkista sähköpostisi.'}catch(err){el('authMsg').textContent=err.message}}
 async function submitListing(){if(savingListing)return;var f=el('form');function val(n){return f.elements[n]?String(f.elements[n].value||'').trim():''}var from=val('from'),to=val('to');if(from&&to&&from>to){el('msg').textContent='Loppupäivä ei voi olla ennen alkupäivää.';return}var title=val('title'),category=val('category'),city=val('city'),priceText=val('price'),description=val('description'),contactName=val('contactName'),contact=val('contact');if(!title||!category||!city||!priceText||!description||!contactName||!contact){el('msg').textContent='Täytä kaikki tähdellä merkityt kentät.';return}if(contact.indexOf('@')<1){el('msg').textContent='Anna toimiva sähköpostiosoite vahvistusta varten.';return}try{el('saveBtn').disabled=true;el('saveBtn').textContent='Tallennetaan…';var row={title:title,category:category,description:description,price:Number(priceText),city:city,postal_code:val('postal'),price_unit:val('period'),available_from:from||null,available_to:to||null,reserved_dates:blockedDays.slice(),images:[],contact_name:contactName,contact_email:contact,contact_phone:'',status:'active',updated_at:new Date().toISOString()};if(signedUser){var session=(await sbAuth.auth.getSession()).data.session;if(!session)throw new Error('Kirjautuminen vanheni. Kirjaudu uudelleen.');if(contact.toLowerCase()!==signedUser.email.toLowerCase())throw new Error('Ilmoituksen sähköpostin pitää olla sama kuin vahvistetun tilisi sähköposti.');if(editingId){var urls=await uploadGalleryImages();row.images=urls;delete row.owner_id;await ownWrite(editingId,row);editingId=null;el('msg').textContent='✓ Muutokset tallennettu.'}else{row.owner_id=signedUser.id;row.images=await uploadGalleryImages();var res=await fetch(SUPABASE_URL+'/rest/v1/listings',{method:'POST',headers:{apikey:SUPABASE_KEY,Authorization:'Bearer '+session.access_token,'Content-Type':'application/json'},body:JSON.stringify(row)});if(!res.ok)throw new Error(await res.text());el('msg').textContent='✓ Ilmoitus julkaistu.'}await loadListings();await loadOwnRows();showAccount()}else{await saveDraft({contact_email:contact,row:row,images:galleryImages.slice()});await sendMagicLink(contact);el('msg').innerHTML='<b style="color:var(--green)">✓ Vahvistuslinkki lähetetty.</b> Avaa sähköposti ja klikkaa linkkiä samalla laitteella ja selaimella. Ilmoitus julkaistaan vahvistuksen jälkeen.'}}catch(err){el('msg').textContent='Tallennus tai sähköpostin lähetys epäonnistui: '+err.message}finally{el('saveBtn').disabled=false;el('saveBtn').textContent=editingId?'Tallenna muutokset':'Julkaise ilmoitus'}}
 initAuth();el('navBrowse').addEventListener('click',showHome);el('navCreate').addEventListener('click',showCreate);el('saveBtn').onclick=submitListing;el('form').onsubmit=function(e){e.preventDefault();submitListing();return false};el('lightbox').onclick=function(e){if(e.target===this)closeLightbox()};document.onkeydown=function(e){if(el('lightbox').className.indexOf('open')>=0){if(e.key==='Escape')closeLightbox();if(e.key==='ArrowLeft')galleryStep(-1);if(e.key==='ArrowRight')galleryStep(1)}};renderUploadGallery();renderBlockedCalendar();renderCategoryCards();initLocationFilters();fillRegionSelect('requestRegion');fillRegionSelect('formRegion');fillCitySelect('requestRegion','requestWhere');fillCitySelect('formRegion','formCity');el('requestRegion').onchange=function(){fillCitySelect('requestRegion','requestWhere')};el('formRegion').onchange=function(){fillCitySelect('formRegion','formCity')};el('regionFilter').onchange=function(){el('cityFilter').value='';updateCityFilter();render()};el('search').oninput=render;el('cityFilter').onchange=render;el('catFilter').onchange=render;el('sort').onchange=render;el('availabilityFilter').onchange=render;loadListings();
