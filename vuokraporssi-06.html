@@ -260,7 +260,7 @@ async function deleteStoredImages(urls){
 async function deleteOwn(i){var x=ownRows[i];if(!x||!confirm('Poistetaanko ilmoitus "'+x.title+'" pysyvästi?'))return;try{await ownWrite(x.id,null,'DELETE');await deleteStoredImages(x.images||[]);await loadOwnRows();await loadListings()}catch(e){alert(e.message)}}
 function editOwn(i,calendar){var x=ownRows[i];if(!x)return;showCreate();editingId=x.id;var f=el('form');var vals={title:x.title,category:x.category,description:x.description,price:x.price,period:x.period,contactName:x.contactName,contact:x.contact,postal:x.postal,from:x.from,to:x.to};Object.keys(vals).forEach(function(k){if(k!=='city'&&f.elements[k])f.elements[k].value=vals[k]||''});
 var foundRegion='';Object.keys(finnishRegions).some(function(r){if((finnishRegions[r]||[]).indexOf(x.city)>=0){foundRegion=r;return true}return false});
-if(foundRegion){el('formRegion').value=foundRegion;populateCitySelect(el('formCity'),foundRegion,'Valitse paikkakunta');el('formCity').disabled=false;el('formCity').value=x.city||''}
+if(foundRegion){el('formRegion').value=foundRegion;fillCitySelect('formRegion','formCity');el('formCity').value=x.city||''}
 blockedDays=(x.blocked||[]).slice();galleryImages=(x.images||[]).slice();renderUploadGallery();renderBlockedCalendar();if(calendar)formStep(1);el('saveBtn').textContent='Tallenna muutokset'}
 function previewOwn(i){showHome();setTimeout(function(){showDetail(i)},80)}
 
