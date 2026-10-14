@@ -268,11 +268,23 @@ function showHome(){el('accountView').style.display='none';el('createView').styl
 var currentFormStep=0;
 function validateFormStep(step){
  var f=el('form'),fields=[];
- if(step===0)fields=['title','category','city','description'];syncFormCategoryValue();
- if(step===1)fields=['price'];
- for(var i=0;i<fields.length;i++){var x=f.elements[fields[i]];if(x&&!x.checkValidity()){x.reportValidity();x.focus();return false}}
- if(step===0){var main=el('formCat'),sub=el('formSubcat');if(main&&!main.value){main.setCustomValidity('Valitse pääkategoria.');main.reportValidity();main.setCustomValidity('');main.focus();return false}if(sub&&!sub.value){sub.setCustomValidity('Valitse alakategoria.');sub.reportValidity();sub.setCustomValidity('');sub.focus();return false}var region=el('formRegion');if(region&&!region.value){region.reportValidity();region.focus();return false}}
- if(step===1){var from=f.elements.from.value,to=f.elements.to.value;if(from&&to&&from>to){el('msg').textContent='Loppupäivä ei voi olla ennen alkupäivää.';f.elements.to.focus();return false}}
+ if(step===0){
+  syncFormCategoryValue();
+  var main=el('formCat'),sub=el('formSubcat'),region=el('formRegion'),city=el('formCity');
+  if(!f.elements.title.value.trim()){el('msg').textContent='Täytä otsikko ennen jatkamista.';f.elements.title.focus();return false}
+  if(!main||!main.value){el('msg').textContent='Valitse pääkategoria ennen jatkamista.';return false}
+  if(!sub||!sub.value){el('msg').textContent='Valitse alakategoria ennen jatkamista.';return false}
+  if(!region||!region.value){el('msg').textContent='Valitse maakunta ennen jatkamista.';return false}
+  if(!city||!city.value){el('msg').textContent='Valitse paikkakunta ennen jatkamista.';return false}
+  if(!f.elements.description.value.trim()){el('msg').textContent='Täytä kuvaus ennen jatkamista.';f.elements.description.focus();return false}
+  el('msg').textContent='';
+ }
+ if(step===1){
+  if(!f.elements.price.value){el('msg').textContent='Anna vuokrahinta ennen jatkamista.';f.elements.price.focus();return false}
+  var from=f.elements.from.value,to=f.elements.to.value;
+  if(from&&to&&from>to){el('msg').textContent='Loppupäivä ei voi olla ennen alkupäivää.';f.elements.to.focus();return false}
+  el('msg').textContent='';
+ }
  return true
 }
 function formStep(n){if(n>currentFormStep&&!validateFormStep(currentFormStep))return;currentFormStep=Math.max(0,Math.min(3,n));var s=document.querySelectorAll('.form-step'),p=document.querySelectorAll('.form-progress span');for(var i=0;i<s.length;i++)s[i].classList.toggle('active',i===currentFormStep);for(var j=0;j<p.length;j++)p[j].classList.toggle('active',j<=currentFormStep)}
