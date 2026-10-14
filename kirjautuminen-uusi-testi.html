@@ -323,6 +323,7 @@ var empty='<div class="empty-state"><strong>'+(listings.length?'Näillä rajauks
 if(listings.length){empty+='<p class="muted" style="grid-column:1/-1;margin:16px 0 2px">Muita Vuokrapörssin ilmoituksia (eivät vastaa valittuja rajauksia):</p>';listings.slice(0,6).forEach(function(x){var k=listings.indexOf(x);empty+='<article class="card market-card" role="button" tabindex="0" onclick="showDetail('+k+')" onkeydown="cardKey(event,'+k+')"><div class="card-media">'+((x.images&&x.images[0])?'<img class="mainimg" src="'+esc(x.images[0])+'" alt="'+esc(x.title)+'">':'<div class="no-image">VP</div>')+'</div><div class="card-body"><div class="card-category">'+esc(x.category)+'</div><h3>'+esc(x.title)+'</h3><div class="card-location">⌖ '+esc(x.city)+'</div><div class="price">'+Number(x.price).toLocaleString('fi-FI')+' €</div></div></article>'})}
 el('cards').innerHTML=empty;}
 
+var ownRows=[];
 var ownFilter='all';
 function showAccount(){if(!signedUser){openLogin();return}loadOwnRows();el('homeView').style.display='none';el('createView').style.display='none';el('accountView').style.display='block';var hero=document.querySelector('.hero');if(hero)hero.style.display='none';closeDetail();renderOwnListings();window.scrollTo({top:0,behavior:'smooth'})}
 function accountDemoListings(){return ownRows}
