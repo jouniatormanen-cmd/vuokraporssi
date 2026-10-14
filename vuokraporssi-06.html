@@ -427,7 +427,7 @@ async function initAuth(){
  async function acceptSession(session,fromRedirect){
   if(!session||!session.user)return;
   signedUser=session.user;
-  var label=el('accountEmail');if(label)label.textContent=signedUser.email||'Kirjautunut';var accountNav=el('accountNav'),logoutNav=el('logoutNav');if(accountNav)accountNav.textContent='Oma Vuokrapörssi';if(logoutNav)logoutNav.style.display='inline-flex';var loginBtn=el('accountLoginBtn'),logoutBtn=el('accountLogoutBtn');if(loginBtn)loginBtn.style.display='none';if(logoutBtn)logoutBtn.style.display='';await loadProfile();
+  var label=el('accountEmail');if(label)label.textContent=signedUser.email||'Kirjautunut';var accountNav=el('accountNav'),logoutNav=el('logoutNav');if(accountNav)accountNav.textContent='Oma Vuokrapörssi';if(logoutNav)logoutNav.style.display='inline-flex';var loginBtn=el('accountLoginBtn'),logoutBtn=el('accountLogoutBtn');if(loginBtn)loginBtn.style.display='none';if(logoutBtn)logoutBtn.style.display='';try{await loadProfile()}catch(profileError){console.warn('Vuokrapörssi: profiilin lataus epäonnistui, kirjautuminen säilyy',profileError)}
   if(handledUserId===signedUser.id)return;
   handledUserId=signedUser.id;
   closeLogin();
