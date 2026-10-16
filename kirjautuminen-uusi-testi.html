@@ -458,7 +458,7 @@ async function initAuth(){
  if(params.has('error'))alert('Sähköpostilinkki ei toiminut: '+(params.get('error_description')||params.get('error')));
  if(/access_token=|error=/.test(location.hash))history.replaceState(null,'',location.pathname+location.search);
 }
-function openRecovery(){closeLogin();el('recoveryModal').className='auth-modal open';el('recoveryModal').setAttribute('aria-hidden','false'}
+function openRecovery(){closeLogin();el('recoveryModal').className='auth-modal open';el('recoveryModal').setAttribute('aria-hidden','false')}
 function closeRecovery(){el('recoveryModal').className='auth-modal';el('recoveryModal').setAttribute('aria-hidden','true')}
 async function saveRecoveredPassword(){var msg=el('recoveryMsg'),btn=el('recoverySave');try{var p=el('recoveryPass').value,c=el('recoveryConfirm').value;if(p.length<8)throw new Error('Salasanassa pitää olla vähintään 8 merkkiä.');if(p!==c)throw new Error('Salasanat eivät täsmää.');btn.disabled=true;msg.textContent='Tallennetaan salasanaa…';var r=await sbAuth.auth.updateUser({password:p});if(r.error)throw r.error;msg.textContent='Salasana vaihdettu onnistuneesti. Voit nyt kirjautua sähköpostilla ja uudella salasanalla.';btn.textContent='Salasana tallennettu';}catch(e){msg.textContent='Salasanan vaihto epäonnistui: '+e.message;btn.disabled=false}}
 function showRegistration(open){el('loginPanel').style.display=open?'none':'block';el('registrationPanel').style.display=open?'block':'none';if(open){el('registerMsg').textContent='';setTimeout(function(){el('registerEmail').focus()},50)}}
