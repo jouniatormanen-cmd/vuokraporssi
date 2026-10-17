@@ -83,9 +83,9 @@ Palvelun käyttöön sovelletaan Suomen lakia, kuitenkaan rajoittamatta kuluttaj
 
 **Palveluntarjoaja:** [täydennetään]  
 **Postiosoite:** [täydennetään]  
-**Sähköposti:** [täydennetään]  
+**Sähköposti:** vuokraporssi@protonmail.com  
 **Mahdollinen Y-tunnus:** [täydennetään, jos on]  
-**Ilmoitukset laittomasta sisällöstä:** [täydennetään]  
+**Ilmoitukset laittomasta sisällöstä:** vuokraporssi@protonmail.com (aiheeksi: Ilmoitus sisällöstä)  
 **Voimaantulo:** [vahvistetaan vasta hyväksymisen jälkeen]
 
 ---
