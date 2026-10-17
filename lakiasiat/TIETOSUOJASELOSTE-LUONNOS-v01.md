@@ -6,7 +6,7 @@
 
 ## 1. Rekisterinpitäjä ja yhteydenotot
 
-Palvelu: **Vuokrapörssi**. Rekisterinpitäjänä toimii palvelun ylläpitäjä yksityishenkilönä. Rekisterinpitäjän lain edellyttämät yksilöinti- ja yhteystiedot: **[vahvistetaan ennen julkaisua]**. Tietosuojapyyntöjen sähköpostiosoite: **[perustetaan ja lisätään ennen julkaisua]**. Pelkkä palvelun nimi ei korvaa rekisterinpitäjän tunnistetietoja.
+Palvelu: **Vuokrapörssi**. Rekisterinpitäjänä toimii palvelun ylläpitäjä yksityishenkilönä. Rekisterinpitäjän lain edellyttämät yksilöinti- ja yhteystiedot: **[vahvistetaan ennen julkaisua]**. Tietosuojapyyntöjen sähköpostiosoite: **vuokraporssi@protonmail.com**. Pelkkä palvelun nimi ei korvaa rekisterinpitäjän tunnistetietoja.
 
 ## 2. Mitä tietoja käsittelemme?
 
