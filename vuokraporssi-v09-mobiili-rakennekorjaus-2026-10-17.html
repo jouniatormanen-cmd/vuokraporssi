@@ -384,6 +384,20 @@ header .topnav .navlink:focus-visible{color:#0d6035!important}
 }
 @media(max-width:360px){body>header>.brand-lockup>.vp-landscape-mark{flex-basis:49px!important;min-width:49px!important;width:49px!important}body>header>.brand-lockup>.vp-logo-words>.vp-logo-name{font-size:16px!important}}
 </style>
+
+<style id="vp-v09-mobile-green-button-contrast">
+/* White labels on sufficiently dark green action surfaces; do not recolor ordinary green links. */
+@media(max-width:760px){
+ .btn:not(.light):not(.red):not(.navadd),
+ .contact-primary,.own-actions .primary-action{
+ background:#176b40!important;background-image:none!important;color:#fff!important;border-color:#176b40!important;
+ }
+ .btn:not(.light):not(.red):not(.navadd) *,
+ .contact-primary *, .own-actions .primary-action *{color:#fff!important}
+ .btn:not(.light):not(.red):not(.navadd):active,.contact-primary:active,.own-actions .primary-action:active{background:#125634!important}
+ .upload-badge,.steps b,.verify-explain>span{background:#176b40!important;color:#fff!important}
+}
+</style>
 </head>
 <body>
 <header><button class="brand-lockup" type="button" onclick="showHome()" aria-label="Vuokrapörssi – etusivu"><svg class="vp-mark vp-landscape-mark" viewBox="0 0 250 72" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
