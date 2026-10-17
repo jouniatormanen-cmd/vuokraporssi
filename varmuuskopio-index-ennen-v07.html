@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="fi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Vuokrapörssi – vuokraa tavaroita, välineitä, ajoneuvoja ja tiloja.">
+  <title>Vuokrapörssi – Vuokraa, löydä ja tienaa</title>
+  <style>
+    :root{--green:#176b48;--dark:#123b2d;--light:#eaf5ee;--white:#fff}
+    *{box-sizing:border-box}body{margin:0;font-family:Arial,Helvetica,sans-serif;color:#20342a;background:#f7faf8;line-height:1.6}
+    header{background:var(--green);color:white;padding:20px 6%;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px}
+    .brand{font-size:1.5rem;font-weight:700}nav a{color:white;text-decoration:none;margin-left:18px}
+    .hero{background:linear-gradient(135deg,#176b48,#269566);color:white;text-align:center;padding:90px 20px}
+    .hero h1{font-size:clamp(2rem,5vw,3.5rem);margin:0 0 14px}.hero p{font-size:1.2rem;max-width:720px;margin:0 auto}
+    main{max-width:1180px;margin:auto;padding:50px 20px}h2{text-align:center;color:var(--dark)}
+    .intro{text-align:center;max-width:760px;margin:0 auto 28px}
+    .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px;margin-top:28px}
+    details.card{background:white;border:1px solid #dce9e0;border-radius:14px;box-shadow:0 4px 16px #00000008;overflow:hidden}
+    details.card summary{list-style:none;cursor:pointer;padding:22px;font-weight:700;color:var(--green);font-size:1.05rem}
+    details.card summary::-webkit-details-marker{display:none}
+    details.card summary::after{content:"＋";float:right;color:var(--green)}
+    details.card[open] summary::after{content:"−"}
+    details.card ul{margin:0;padding:0 22px 22px 42px}
+    details.card li{margin:6px 0}
+    .notice{background:var(--light);border-radius:14px;padding:30px;margin-top:48px;text-align:center}
+    footer{text-align:center;background:var(--dark);color:white;padding:25px}
+    @media(max-width:600px){nav{width:100%;display:flex;gap:16px}nav a{margin-left:0}.hero{padding:65px 18px}}
+  </style>
+</head>
+<body>
+<header><div class="brand">Vuokrapörssi</div><nav><a href="#kategoriat">Kategoriat</a><a href="#tietoa">Tietoa palvelusta</a></nav></header>
+<section class="hero"><h1>Vuokraa, löydä ja tienaa</h1><p>Vuokrapörssi yhdistää vuokrattavan omaisuuden ja sitä tarvitsevat ihmiset yhteen valtakunnalliseen palveluun – jotta kaikkea ei tarvitse omistaa.</p></section>
+<main>
+<section id="kategoriat">
+<h2>Löydä oikea kategoria</h2>
+<p class="intro">Valitse pääkategoria. Tarkemmat vaihtoehdot avautuvat vasta valinnan jälkeen, jotta palvelu pysyy selkeänä ja helppokäyttöisenä.</p>
+<div class="grid">
+<details class="card"><summary>🚗 Ajoneuvot ja kuljetus</summary><ul><li>Henkilöautot</li><li>Pakettiautot</li><li>Kuorma-autot ja hyötyajoneuvot</li><li>Matkailuautot ja asuntovaunut</li><li>Peräkärryt ja trailerit</li><li>Moottoripyörät ja mopot</li><li>Mönkijät ja moottorikelkat</li><li>Polkupyörät ja sähköpyörät</li><li>Muut ajoneuvot</li></ul></details>
+<details class="card"><summary>🛠️ Koneet, työkalut ja rakentaminen</summary><ul><li>Sähkö- ja akkutyökalut</li><li>Käsityökalut</li><li>Rakennuskoneet</li><li>Kaivinkoneet ja kuormaajat</li><li>Nostimet ja telineet</li><li>Betonointi ja muuraus</li><li>Hitsaus ja metallityöt</li><li>Mittauslaitteet</li><li>Kompressorit</li><li>Generaattorit ja työmaasähkö</li><li>Muu ammattikalusto</li></ul></details>
+<details class="card"><summary>🌲 Piha, metsä ja maatalous</summary><ul><li>Ruohonleikkurit</li><li>Trimmerit ja raivaussahat</li><li>Moottorisahat</li><li>Halkomakoneet</li><li>Oksasilppurit</li><li>Puutarhakoneet</li><li>Traktorit</li><li>Maatalouskoneet</li><li>Metsätyövälineet ja -koneet</li></ul></details>
+<details class="card"><summary>🏠 Asunnot, tilat ja majoitus</summary><ul><li>Asunnot</li><li>Huoneet</li><li>Mökit ja loma-asunnot</li><li>Autotallit, hallit ja varastot</li><li>Toimisto- ja työtilat</li><li>Liiketilat</li><li>Juhla- ja kokoustilat</li><li>Muut vuokrattavat tilat</li></ul></details>
+<details class="card"><summary>🚤 Veneet ja vesillä liikkuminen</summary><ul><li>Moottoriveneet</li><li>Purjeveneet</li><li>Soutuveneet</li><li>Vesijetit</li><li>Kanootit ja kajakit</li><li>SUP-laudat</li><li>Veneily- ja vesiliikuntavarusteet</li></ul></details>
+<details class="card"><summary>⚽ Urheilu, harrastukset ja ulkoilu</summary><ul><li>Talviurheilu</li><li>Pyöräily</li><li>Retkeily ja camping</li><li>Kalastus</li><li>Metsästysvarusteet</li><li>Kuntoilu</li><li>Pallopelit</li><li>Muut harrastusvälineet</li></ul></details>
+<details class="card"><summary>🎉 Juhlat ja tapahtumat</summary><ul><li>Teltat ja katokset</li><li>Pöydät ja tuolit</li><li>Astiat ja tarjoiluvälineet</li><li>Koristeet</li><li>Äänentoisto</li><li>Valaistus</li><li>Tapahtumatekniikka</li><li>Lavat</li><li>Aktiviteetit ja juhlavälineet</li></ul></details>
+<details class="card"><summary>📷 Elektroniikka, kuvaus ja AV</summary><ul><li>Kamerat ja objektiivit</li><li>Videokalusto</li><li>Dronet</li><li>Projektorit ja valkokankaat</li><li>Näytöt</li><li>Tietokoneet ja tabletit</li><li>Äänentoistolaitteet</li><li>Studio- ja kuvauskalusto</li></ul></details>
+<details class="card"><summary>🧹 Koti, siivous ja muutto</summary><ul><li>Tekstiilipesurit</li><li>Paine- ja höyrypesurit</li><li>Imurit</li><li>Muutto- ja kuljetusvälineet</li><li>Keittiölaitteet</li><li>Kodinkoneet</li><li>Muut kodin välineet</li></ul></details>
+<details class="card"><summary>👶 Lapset ja perheet</summary><ul><li>Lastenvaunut ja rattaat</li><li>Turvaistuimet</li><li>Matkasängyt</li><li>Syöttötuolit</li><li>Lelut ja pelit</li><li>Lasten harrastus- ja matkailuvälineet</li></ul></details>
+<details class="card"><summary>🏕️ Matkailu ja vapaa-aika</summary><ul><li>Matkailutarvikkeet</li><li>Grillaus ja ulkoruoanlaitto</li><li>Ranta- ja kesävälineet</li><li>Muu vapaa-ajan kalusto</li></ul></details>
+<details class="card"><summary>📦 Muut vuokrattavat</summary><ul><li>Muut tuotteet, tavarat ja kohteet, joille ei vielä löydy omaa kategoriaa</li></ul></details>
+</div>
+</section>
+<section class="notice" id="tietoa"><h2>Palvelu on kehitteillä</h2><p>Vuokrapörssiä rakennetaan vaiheittain. Kategoriarakenteen jälkeen palveluun lisätään ilmoitusten ja haun toimintoja.</p></section>
+</main>
+<footer>© 2026 Vuokrapörssi · Kehitteillä oleva palvelu</footer>
+</body></html>
