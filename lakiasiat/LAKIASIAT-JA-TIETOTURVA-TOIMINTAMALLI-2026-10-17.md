@@ -9,9 +9,9 @@ Päivitetty 17.10.2026. Sisäinen työohje; ei korvaa julkaistavia käyttöehtoj
 - Julkiseen käyttöön siirtyminen edellyttää jäljempänä kuvattujen avointen asioiden ratkaisua.
 
 ## Julkaisua varten valmisteltavat yhteyskanavat
-1. Julkinen palveluntarjoajan tunniste ja toimiva yhteysosoite.
-2. Yhteydenottokanava tietosuojaoikeuksien käyttämistä varten.
-3. Kanava laittomasta sisällöstä ilmoittamiseen. Käsittelyssä kirjataan ilmoituksen vastaanotto, arviointi, ratkaisu ja mahdollinen perustelu sekä lain vaatimat muutoksenhakutiedot.
+1. Julkinen yhteyssähköposti on päätetty: **vuokraporssi@protonmail.com**. Palveluntarjoajan muut tunnistetiedot vahvistetaan erikseen.
+2. Tietosuojaoikeuksien yhteydenottokanava: **vuokraporssi@protonmail.com** (viestin aihe: Tietosuojapyyntö).
+3. Laittoman sisällön ilmoituskanava: **vuokraporssi@protonmail.com** (viestin aihe: Ilmoitus sisällöstä). Käsittelyssä kirjataan ilmoituksen vastaanotto, arviointi, ratkaisu ja mahdollinen perustelu sekä lain vaatimat muutoksenhakutiedot.
 4. Turvallisuuspoikkeamista ilmoittamisen kanava. Samaa sähköpostia voi käyttää useampaan tarkoitukseen, jos viestit pystytään käsittelemään asianmukaisesti.
 
 ## Ilmoituksen julkaisu: käyttöliittymään toteutettava
