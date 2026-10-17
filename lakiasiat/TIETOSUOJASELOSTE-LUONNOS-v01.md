@@ -1,6 +1,7 @@
 # Vuokrapörssi – tietosuojaseloste (LUONNOS v0.1)
 
 **Laadittu:** 17.10.2026  
+**Päivitetty:** 17.10.2026 – yksityishenkilön ylläpito ja anon-käyttöoikeuksien tarkistus  
 **Tila:** Kehitysvaiheen tarkistusluonnos. EI julkaisuvalmis ennen alla olevien avoimien tietojen vahvistamista.
 
 ## 1. Rekisterinpitäjä ja yhteydenotot
@@ -35,7 +36,7 @@ Palvelu: **Vuokrapörssi**. Rekisterinpitäjänä toimii palvelun ylläpitäjä 
 
 Julkisessa ilmoituksessa voivat näkyä käyttäjän antamat otsikko, kuvaus, kuvat, hinta, sijainti, saatavuus ja ilmoitukseen merkityt yhteystiedot. Hakuilmoitusten sähköpostiosoite voi nykyisessä toteutuksessa olla julkisesti saatavilla tietokantarajapinnan kautta. Julkaistuja tietoja voivat lukea myös kirjautumattomat kävijät ja ne voivat päätyä hakukoneisiin tai kolmansien osapuolten kopioihin.
 
-Käyttäjätilin salasanaa ei julkaista. Käyttäjätunnisteen (UID) mahdollinen näkyvyys julkisen rajapinnan kautta on tarkistettava ja minimoitava ennen julkaisua.
+Käyttäjätilin salasanaa ei julkaista. Käyttäjän ilmoituksen mukaan 17.10.2026 suoritettu SQL-muutos poisti anonyymin roolin lukuoikeuden ilmoitustaulujen `owner_id`-sarakkeeseen; SQL-jälkitarkistus palautti nolla riviä. Julkisen REST-rajapinnan toiminta ja muut henkilötietokentät on silti tarkistettava ennen julkaisua.
 
 ## 5. Kenelle tietoja luovutetaan?
 
@@ -76,7 +77,7 @@ Selostetta päivitetään, kun palvelun ominaisuudet tai tietojenkäsittely muut
 
 1. Vahvista rekisterinpitäjän lain edellyttämät tiedot ja erillinen tietosuojayhteysosoite.
 2. Tarkista Supabase-projektin alue, DPA, alikäsittelijät ja Google/GitHub-tietovirrat.
-3. Tarkista **julkisten REST-rajapintojen tietokentät**: etenkin sähköpostit, puhelimet, omistaja-UID:t ja hakuilmoitukset. Minimoi tarpeeton julkinen saatavuus.
+3. Tarkista **julkisten REST-rajapintojen tietokentät**: etenkin sähköpostit, puhelimet ja hakuilmoitukset. Omistaja-UID:n anonyymi sarakelukuoikeus on SQL-tarkistuksen perusteella rajattu, mutta käytännön rajapintatesti puuttuu. Minimoi tarpeeton julkinen saatavuus.
 4. Päätä ja toteuta säilytysajat, tilin poistaminen, ilmoitusten ja kuvien poistaminen sekä varmuuskopioiden poistumisaikataulu.
 5. Selvitä viestitoiminnon toteutunut tietojenkäsittely ja tarkista mahdollinen sähköpostipalvelu.
 6. Inventoi evästeet, localStorage ja ulkoiset resurssit; tee tarvittavat käyttäjäilmoitukset ja suostumustoiminnot.
