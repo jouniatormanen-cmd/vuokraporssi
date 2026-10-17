@@ -362,7 +362,68 @@ header .topnav #accountNav,
 header .topnav #logoutNav{color:#14271c!important;opacity:1!important}
 header .topnav .navlink:hover,
 header .topnav .navlink:focus-visible{color:#0d6035!important}
-</style></head>
+</style>
+<style id="vp-v09-mobile-structural-layout">
+@media(max-width:760px){
+ html,body{max-width:100%;overflow-x:clip!important}
+ body>header{display:grid!important;grid-template-columns:minmax(0,1fr) 48px!important;grid-template-rows:56px!important;align-items:center!important;column-gap:8px!important;justify-content:stretch!important;flex-wrap:nowrap!important;box-sizing:border-box!important;width:100%!important;max-width:100%!important;min-height:64px!important;padding:4px 12px!important;overflow:visible!important}
+ body>header>.brand-lockup{grid-column:1!important;grid-row:1!important;display:flex!important;align-items:center!important;justify-self:stretch!important;flex:none!important;min-width:0!important;width:100%!important;max-width:100%!important;gap:9px!important;padding:0!important;margin:0!important;overflow:hidden!important}
+ body>header>.brand-lockup>.vp-landscape-mark{display:block!important;flex:0 0 66px!important;width:66px!important;min-width:66px!important;max-width:66px!important;height:38px!important}
+ body>header>.brand-lockup>.vp-logo-words{display:flex!important;flex:1 1 auto!important;flex-direction:column!important;align-items:flex-start!important;min-width:0!important;max-width:100%!important;gap:0!important;overflow:hidden!important}
+ body>header>.brand-lockup>.vp-logo-words>.vp-logo-name{display:block!important;font-size:clamp(16px,4.5vw,21px)!important;line-height:1.15!important;white-space:nowrap!important;letter-spacing:-.6px!important;color:#173e2a!important}
+ body>header>.brand-lockup>.vp-logo-words>.vp-logo-tagline{display:none!important}
+ body>header>nav.topnav{display:none!important}
+ body>header>button.vp-mobile-main-toggle{grid-column:2!important;grid-row:1!important;display:flex!important;visibility:visible!important;opacity:1!important;align-items:center!important;justify-content:center!important;justify-self:center!important;align-self:center!important;box-sizing:border-box!important;position:relative!important;flex:none!important;width:44px!important;height:44px!important;min-width:44px!important;min-height:44px!important;padding:0!important;margin:0!important;border:1px solid #a6c5b2!important;border-radius:11px!important;background:#edf7f0!important;color:#173e2a!important;font-size:25px!important;line-height:1!important;z-index:110!important}
+ body>header>#mobileMenu{position:absolute!important;left:12px!important;right:12px!important;top:100%!important;box-sizing:border-box!important;max-height:calc(100dvh - 78px)!important;overflow-y:auto!important;padding:9px!important;background:#fff!important;border:1px solid #d9e6dd!important;border-radius:0 0 16px 16px!important;box-shadow:0 15px 35px #0003!important;z-index:109!important}
+ body>header>#mobileMenu:not(.open){display:none!important}body>header>#mobileMenu.open{display:block!important}
+ #mobileMenu .vp-menu-heading{padding:10px 12px 6px;color:#6b8071;font-size:10px;font-weight:850;letter-spacing:1.2px}
+ #mobileMenu button,#mobileMenu a{display:block!important;box-sizing:border-box!important;width:100%!important;min-height:44px!important;padding:11px 12px!important;background:transparent!important;border:0!important;border-bottom:1px solid #eef2ee!important;border-radius:7px!important;color:#173e2a!important;text-align:left!important;text-decoration:none!important;font-size:14px!important;font-weight:700!important}
+ .hero,.hero>*,main,main>*{max-width:100%!important;min-width:0!important}
+ .hero{overflow:hidden!important}
+ .hero .hero-examples,.hero .hero-cats,.hero .hero-category-row{max-width:100%!important;overflow-x:auto!important}
+}
+@media(max-width:360px){body>header>.brand-lockup>.vp-landscape-mark{flex-basis:49px!important;min-width:49px!important;width:49px!important}body>header>.brand-lockup>.vp-logo-words>.vp-logo-name{font-size:16px!important}}
+</style>
+
+<style id="vp-v09-mobile-green-button-contrast">
+/* White labels on sufficiently dark green action surfaces; do not recolor ordinary green links. */
+@media(max-width:760px){
+ .btn:not(.light):not(.red):not(.navadd),
+ .contact-primary,.own-actions .primary-action{
+ background:#176b40!important;background-image:none!important;color:#fff!important;border-color:#176b40!important;
+ }
+ .btn:not(.light):not(.red):not(.navadd) *,
+ .contact-primary *, .own-actions .primary-action *{color:#fff!important}
+ .btn:not(.light):not(.red):not(.navadd):active,.contact-primary:active,.own-actions .primary-action:active{background:#125634!important}
+ .upload-badge,.steps b,.verify-explain>span{background:#176b40!important;color:#fff!important}
+}
+</style>
+
+<style id="vp-v09-green-background-white-text">
+/* Mobile: readable white text on dark green content panels. Keep white form inputs dark. */
+@media(max-width:760px){
+ .detail-section,.detail-section h3,.detail-section .eyebrow,.detail-section>p,.detail-section .detail-description,
+ .detail-section .availability-legend,.detail-section .availability-legend span,
+ .detail-summary .eyebrow,
+ .hero .future-badge,.hero .hero-live,
+ .vp27,.vp27 h2,.vp27 h3,.vp27 h4,.vp27 p,.vp27 li,.vp27 strong,
+ .owner-cta h2,.owner-cta h3,.owner-cta p,
+ .detail-safety h3,.detail-safety p{color:#fff!important}
+ .detail-section .btn.light{color:#fff!important}
+ .detail-section input,.detail-section textarea,.detail-section select{color:#182b21!important}
+}
+</style>
+
+<style id="vp-v09-detail-contrast-definitive">
+/* Detail panels are dark green: use high contrast on every textual child. */
+#detail .detail-info .detail-section,#detail .detail-info .detail-section h3,#detail .detail-info .detail-section .eyebrow,#detail .detail-info .detail-section p,#detail .detail-info .detail-section b,#detail .detail-info .detail-section strong,#detail .detail-info .detail-section .detail-description,#detail .detail-info .detail-section .public-calendar-head b,#detail .detail-info .detail-section .calendar>b,#detail .detail-info .detail-section .availability-legend,#detail .detail-info .detail-section .availability-legend span{color:#fff!important}
+#detail .detail-info .detail-section .calendar .day.free{color:#fff!important;background:#165c3b!important;border-color:#428965!important}
+#detail .detail-info .detail-section .calendar .day.reserved{color:#fff!important}
+#detail .detail-info .detail-section .calendar .day.unavailable{color:#a9bdb0!important;opacity:1!important}
+#detail .detail-info .detail-section .public-calendar-head .btn.light{color:#fff!important;background:#102d20!important}
+#detail .detail-info .detail-section input,#detail .detail-info .detail-section textarea,#detail .detail-info .detail-section select{color:#182b21!important}
+</style>
+</head>
 <body>
 <header><button class="brand-lockup" type="button" onclick="showHome()" aria-label="Vuokrapörssi – etusivu"><svg class="vp-mark vp-landscape-mark" viewBox="0 0 250 72" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
 <g fill="none" stroke="#237e4e" stroke-linecap="round" stroke-linejoin="round" stroke-width="3.4">
@@ -375,7 +436,7 @@ header .topnav .navlink:focus-visible{color:#0d6035!important}
 <path d="M183 52l7-20 7 20h-14M185 40h10M204 52l8-26 8 26h-16M207 39h10"/>
 <path d="M221 42h22l-5 12h-12zM229 41V27M229 28h11"/>
 <path d="M221 61q6-4 12 0t12 0" stroke="#3fa9a0" stroke-width="2"/>
-</g></svg><span class="vp-logo-words"><span class="vp-logo-name">Vuokrapörssi</span><span class="vp-logo-tagline">Omista vähemmän. Koe enemmän.</span></span></button><nav class="topnav"><button class="navlink" id="navBrowse" type="button" onclick="browseCategories()">Selaa tarjontaa</button><button class="navlink" type="button" onclick="showWanted()">Jätä helppo hakuilmoitus</button><button class="navlink" type="button" onclick="showWantedBrowse()">Selaa hakuilmoituksia</button><button class="navlink account-link" id="accountNav" type="button" onclick="showAccount()">Kirjaudu sisään</button><button class="navlink account-link" id="logoutNav" type="button" onclick="signOutVp()" style="display:none">Kirjaudu ulos</button><button class="btn navadd" id="navCreate" type="button" onclick="showCreate()">+ Jätä ilmoitus</button><button class="mobile-menu-toggle" type="button" onclick="toggleMobileMenu()" aria-label="Avaa valikko" aria-expanded="false">☰</button></nav><div id="mobileMenu" class="mobile-menu"><button type="button" onclick="mobileGo('home')">Etusivu</button><button type="button" onclick="mobileGo('browse')">Selaa ilmoituksia</button><button type="button" onclick="mobileGo('create')">+ Jätä ilmoitus</button><button type="button" onclick="showWanted();toggleMobileMenu()">Jätä helppo hakuilmoitus</button><button type="button" onclick="showWantedBrowse();toggleMobileMenu()">Selaa hakuilmoituksia</button><button type="button" onclick="mobileGo('account')">Oma Vuokrapörssi</button></div></header>
+</g></svg><span class="vp-logo-words"><span class="vp-logo-name">Vuokrapörssi</span><span class="vp-logo-tagline">Omista vähemmän. Koe enemmän.</span></span></button><nav class="topnav"><button class="navlink" id="navBrowse" type="button" onclick="browseCategories()">Selaa tarjontaa</button><button class="navlink" type="button" onclick="showWanted()">Jätä helppo hakuilmoitus</button><button class="navlink" type="button" onclick="showWantedBrowse()">Selaa hakuilmoituksia</button><button class="navlink account-link" id="accountNav" type="button" onclick="showAccount()">Kirjaudu sisään</button><button class="navlink account-link" id="logoutNav" type="button" onclick="signOutVp()" style="display:none">Kirjaudu ulos</button><button class="btn navadd" id="navCreate" type="button" onclick="showCreate()">+ Jätä ilmoitus</button></nav><button class="mobile-menu-toggle vp-mobile-main-toggle" type="button" onclick="toggleMobileMenu()" aria-label="Avaa valikko" aria-expanded="false">☰</button><div id="mobileMenu" class="mobile-menu"><div class="vp-menu-heading">VALIKKO</div><button type="button" onclick="mobileGo('home')">Etusivu</button><button type="button" onclick="mobileGo('browse')">Selaa vuokrailmoituksia</button><button type="button" onclick="mobileGo('create')">+ Jätä vuokrailmoitus</button><button type="button" onclick="closeMobileMenu();showWantedBrowse()">Selaa hakuilmoituksia</button><button type="button" onclick="closeMobileMenu();showWanted()">Jätä hakuilmoitus</button><div class="vp-menu-heading">OMA ASIOINTI</div><button type="button" onclick="mobileGo('account')">Oma Vuokrapörssi / Kirjaudu</button><div class="vp-menu-heading">TIETOA</div><a href="info/ohjeet.html">Ohjeet</a><a href="info/turvallisuus.html">Turvallinen vuokraaminen</a><a href="info/tietoa.html">Tietoa Vuokrapörssistä</a><a href="mailto:vuokraporssi@protonmail.com">Ota yhteyttä</a></div></header>
 <section class="hero"><div class="hero-gridfx"></div><div class="hero-glow glow-a"></div><div class="hero-glow glow-b"></div><div class="hero-orbit orbit1"></div><div class="hero-orbit orbit2"></div><div class="rental-pattern" aria-hidden="true">
 <svg class="rental-icon ri-boat" viewBox="0 0 160 100"><path d="M12 52h136l-21 30H36L12 52ZM42 50V20h62l19 30M71 20V7M23 91q12-9 24 0t24 0t24 0t24 0t24 0"/></svg>
 <svg class="rental-icon ri-sauna" viewBox="0 0 150 120"><path d="M12 51 75 12l63 39M26 45v61h98V45M60 106V67h30v39M99 68h14v16H99zM45 13q-10-9 0-17M61 13q-10-9 0-17"/></svg>
