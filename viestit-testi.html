@@ -54,8 +54,6 @@ label{font-weight:700;font-size:13px;color:#c8d9d0}input,select,textarea{box-siz
 input[type="date"]::-webkit-calendar-picker-indicator{filter:invert(1) brightness(1.8);opacity:.9;cursor:pointer}
 input[type="date"]::-webkit-calendar-picker-indicator:hover{opacity:1}
 .category-subpanel{margin-top:12px;padding:18px;border:1px solid var(--line);border-radius:18px;background:#0a1811}.category-subhead{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:12px}.category-subhead strong{font-size:18px}.category-subhead button{border:0;background:transparent;color:var(--muted);font-size:25px;cursor:pointer}.subcategory-buttons{display:flex;flex-wrap:wrap;gap:8px}.subcategory-buttons button{border:1px solid #315541;background:#12291e;color:#d8eee2;border-radius:999px;padding:9px 12px;font:inherit;font-size:12px;font-weight:750;cursor:pointer}.subcategory-buttons button:hover{border-color:var(--green);color:#fff}@media(max-width:760px){.category-subpanel{padding:14px}.subcategory-buttons{display:grid;grid-template-columns:1fr 1fr}.subcategory-buttons button{text-align:left;border-radius:11px;padding:10px}}@media(max-width:420px){.subcategory-buttons{grid-template-columns:1fr}}
-/* Vuokrapörssi: yksityiset viestit */
-.vp-msg-section{margin:28px 0;padding:22px;border:1px solid var(--line);border-radius:18px}.vp-msg-list{display:grid;gap:10px;margin:14px 0}.vp-msg-thread{border:1px solid var(--line);border-radius:12px;padding:12px;background:transparent;color:inherit;text-align:left;cursor:pointer;width:100%}.vp-msg-thread strong{display:block}.vp-msg-thread small{opacity:.75}.vp-msg-bubble{margin:9px 0;padding:12px;border-radius:12px;border:1px solid var(--line);white-space:pre-wrap;overflow-wrap:anywhere}.vp-msg-bubble.mine{border-color:#75a68d}.vp-msg-compose{display:grid;gap:10px;margin-top:12px}.vp-msg-compose textarea{width:100%;min-height:90px;padding:12px;border-radius:10px;background:transparent;color:inherit;border:1px solid var(--line)}.vp-msg-status{font-size:13px;min-height:20px}
 </style>
 <style>
 /* Oma Vuokrapörssi — ensimmäinen käyttöliittymärunko */
@@ -180,7 +178,6 @@ header .topnav #navCreate.btn.navadd{font-size:8px!important;padding-left:6px!im
 <div class="account-summary"><span class="account-pill"><b id="ownActiveCount">0</b> aktiivista</span><span class="account-pill"><b id="ownPausedCount">0</b> tauolla</span></div>
 <div class="account-section-head"><h2>Ilmoitukset</h2><div class="account-filters"><button class="account-filter active" data-ownfilter="all" onclick="setOwnFilter('all',this)">Kaikki</button><button class="account-filter" data-ownfilter="active" onclick="setOwnFilter('active',this)">Aktiiviset</button><button class="account-filter" data-ownfilter="paused" onclick="setOwnFilter('paused',this)">Tauolla</button></div></div>
 <div id="ownListings" class="own-list"></div>
-<section class="vp-msg-section" id="vpInbox"><div class="account-section-head"><h2>Viestit</h2><button class="btn light" type="button" onclick="vpLoadMessages()">Päivitä viestit</button></div><p class="muted">Yksityiset keskustelut ilmoituksistasi ja lähettämistäsi yhteydenotoista.</p><div id="vpMessageList" class="vp-msg-list">Kirjaudu sisään nähdäksesi viestit.</div><div id="vpMessageConversation"></div></section>
 <div class="account-profile"><div style="flex:1"><span class="eyebrow">OMAT TIEDOT</span><h3 id="profileHeading">Vuokrapörssi-käyttäjä</h3><p>Sähköposti <span id="accountEmail">Ei kirjautunut</span></p><p id="profileContact" class="muted">Nimeä ja puhelinnumeroa ei ole vielä tallennettu.</p><div style="display:flex;gap:8px;margin:10px 0;flex-wrap:wrap"><button class="btn light" id="accountLoginBtn" type="button" onclick="openLogin()">Kirjaudu sisään</button><button class="btn light" id="accountLogoutBtn" type="button" onclick="signOutVp()" style="display:none">Kirjaudu ulos</button></div><div id="profileEditor" style="display:none;margin-top:14px;max-width:520px"><div class="grid"><label>Nimi<input id="profileName" autocomplete="name"></label><label>Puhelinnumero<input id="profilePhone" type="tel" autocomplete="tel"></label></div><div style="display:flex;gap:8px;margin-top:10px;flex-wrap:wrap"><button class="btn" type="button" onclick="saveProfile()">Tallenna</button><button class="btn light" type="button" onclick="toggleProfileEditor(false)">Peruuta</button></div><p id="profileMsg" class="muted"></p></div></div><button class="btn light" id="editProfileBtn" type="button" onclick="toggleProfileEditor(true)">Muokkaa tietoja</button></div>
 </section></main><div id="authModal" class="auth-modal" aria-hidden="true"><div class="auth-card"><div id="loginPanel"><button class="auth-close" type="button" onclick="closeLogin()" aria-label="Sulje">×</button><span class="eyebrow">OMA VUOKRAPÖRSSI</span><h2>Kirjaudu turvallisesti</h2><p>Valitse Google-tili tai sähköposti ja salasana.</p><button class="btn light auth-submit" type="button" onclick="signInGoogle()">Jatka Google-tilillä</button><p class="muted" style="text-align:center">tai</p><form id="passwordLoginForm" onsubmit="event.preventDefault();signInPassword()"><label>Sähköposti<input id="loginEmail" type="email" autocomplete="email" placeholder="nimi@example.fi" required></label><label>Salasana<input id="loginPassword" type="password" autocomplete="current-password" minlength="8" required></label><button class="btn auth-submit" type="submit">Kirjaudu sisään</button></form><div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:12px"><button class="btn light" type="button" onclick="showRegistration(true)">Luo uusi tili</button><button class="btn light" type="button" onclick="resetPassword()">Unohtuiko salasana?</button></div><p id="authMsg" class="muted" role="status" aria-live="polite"></p><div class="auth-foot">Rekisteröityminen voi edellyttää sähköpostivahvistusta. Älä käytä samaa salasanaa muissa palveluissa.</div></div><div id="registrationPanel" style="display:none"><span class="eyebrow">OMA VUOKRAPÖRSSI</span><h2>Luo uusi käyttäjätili</h2><p>Rekisteröidy sähköpostiosoitteella ja salasanalla.</p><form id="registrationForm" onsubmit="event.preventDefault();registerPassword()"><label>Sähköposti<input id="registerEmail" type="email" autocomplete="email" placeholder="nimi@example.fi" required></label><label>Salasana (vähintään 8 merkkiä)<input id="registerPassInput" type="password" autocomplete="new-password" minlength="8" required></label><label>Vahvista salasana<input id="registerPasswordConfirm" type="password" autocomplete="new-password" minlength="8" required></label><button class="btn auth-submit" type="submit">Rekisteröidy</button></form><button class="btn light" type="button" onclick="showRegistration(false)">Takaisin kirjautumiseen</button><p id="registerMsg" class="muted" role="status" aria-live="polite"></p><p class="auth-foot">Sähköpostivahvistus voi olla tarpeen. Käytä eri salasanaa kuin muissa palveluissa.</p></div></div></div>
 <div id="recoveryModal" class="auth-modal" aria-hidden="true"><div class="auth-card"><button class="auth-close" type="button" onclick="closeRecovery()" aria-label="Sulje">×</button><h2>Aseta uusi salasana</h2><p>Kirjoita uusi salasana Vuokrapörssi-tilillesi.</p><form onsubmit="event.preventDefault();saveRecoveredPassword()"><label>Uusi salasana<input id="recoveryPass" type="password" minlength="8" autocomplete="new-password" required></label><label>Vahvista uusi salasana<input id="recoveryConfirm" type="password" minlength="8" autocomplete="new-password" required></label><button id="recoverySave" class="btn auth-submit" type="submit">Tallenna uusi salasana</button></form><p id="recoveryMsg" role="status" aria-live="polite"></p></div></div>
@@ -330,7 +327,7 @@ el('cards').innerHTML=empty;}
 
 var ownRows=[];
 var ownFilter='all';
-function showAccount(){if(!signedUser){openLogin();return}loadOwnRows();vpLoadMessages();el('homeView').style.display='none';el('createView').style.display='none';el('accountView').style.display='block';var hero=document.querySelector('.hero');if(hero)hero.style.display='none';closeDetail();renderOwnListings();window.scrollTo({top:0,behavior:'smooth'})}
+function showAccount(){if(!signedUser){openLogin();return}loadOwnRows();el('homeView').style.display='none';el('createView').style.display='none';el('accountView').style.display='block';var hero=document.querySelector('.hero');if(hero)hero.style.display='none';closeDetail();renderOwnListings();window.scrollTo({top:0,behavior:'smooth'})}
 function accountDemoListings(){return ownRows}
 function ownState(x,i){return x.status==='paused'?'paused':'active'}
 function setOwnFilter(v,btn){ownFilter=v;document.querySelectorAll('.account-filter').forEach(function(b){b.classList.toggle('active',b===btn)});renderOwnListings()}
@@ -372,87 +369,9 @@ async function adminDeleteListing(k){
   alert('Ilmoitus poistettiin ylläpitäjänä.');
  }catch(e){alert(e.message)}
 }
-function showDetail(k){var x=listings[k],d=el('detail');if(!x||!d)return;activeDetail=k;galleryIndex=0;delete calendarMonths[String(k)];var avail=(x.from||x.to)?((x.from?'Alkaen '+detailDate(x.from):'')+(x.from&&x.to?' – ':'')+(x.to?'asti '+detailDate(x.to):'')):'Saatavuus sovittavissa';var mail=String(x.contact||''),phone=String(x.phone||''),contactActions='';if(mail.indexOf('@')>0)contactActions+='<a class="contact-email contact-primary" href="mailto:'+esc(mail)+'?subject='+encodeURIComponent('Vuokrapörssi: '+x.title)+'&body='+encodeURIComponent('Hei! Olen kiinnostunut Vuokrapörssissä olevasta ilmoituksestasi: '+x.title+'.\n\nOnko kohde vielä saatavilla?')+'">✉ Lähetä sähköpostia</a>';if(phone)contactActions+='<a class="contact-email" href="tel:'+esc(phone.replace(/[^+0-9]/g,''))+'">☎ Soita '+esc(phone)+'</a>';if(!contactActions)contactActions='<p>Yhteystieto ei ole saatavilla.</p>';d.innerHTML='<div class="detail-top"><button class="detail-back" type="button" onclick="closeDetail()">← Takaisin ilmoituksiin</button><span class="detail-brand">VUOKRAPÖRSSI</span></div><div class="detail-layout"><div class="detail-gallery">'+galleryHtml(x)+'</div><aside class="detail-summary"><div class="detail-meta"><span class="card-category">'+esc(x.category)+'</span><span class="card-location">⌖ '+esc(x.city)+(x.postal?' · '+esc(x.postal):'')+'</span></div><h2>'+esc(x.title)+'</h2><div class="detail-price">'+Number(x.price).toLocaleString('fi-FI')+' € <small>/ '+esc(x.period)+'</small></div>'+availabilityBadge(x)+'<div class="detail-facts"><div class="detail-fact"><small>Sijainti</small><b>'+esc(x.city)+'</b></div><div class="detail-fact"><small>Saatavuus</small><b>'+avail+'</b></div></div><div class="detail-rule"></div><div class="contact-box"><span class="eyebrow">Kiinnostuitko?</span><h3>Ota yhteyttä vuokraajaan</h3><strong>'+esc(x.contactName)+'</strong><p class="contact-hint">Kysy saatavuudesta ja sovi vuokrauksen yksityiskohdat suoraan ilmoittajan kanssa.</p>'+contactActions+'<button class="contact-email" type="button" onclick="vpStartMessage('+k+')">✉ Lähetä viesti Vuokrapörssissä</button><div class="trust-note"><b>Sopikaa ennen vuokrausta</b><span>Varmistakaa ainakin vuokra-aika, hinta, luovutus, palautus ja mahdollinen vakuus kirjallisesti.</span></div>'+(isVpAdmin()?'<button class="btn red" type="button" style="margin-top:14px;width:100%" onclick="adminDeleteListing('+k+')">Poista ilmoitus ylläpitäjänä</button>':'')+'</div></aside></div><div class="detail-info"><section class="detail-section"><span class="eyebrow">Ilmoituksen tiedot</span><h3>Kuvaus</h3><p class="detail-description">'+esc(x.description)+'</p></section><section class="detail-section"><span class="eyebrow">Milloin vapaa?</span><h3>Saatavuus</h3><p>'+avail+'</p><div id="cal-'+k+'">'+makeCalendar(x,k)+'</div><div class="availability-legend"><span><i class="availability-dot"></i>Saatavilla</span><span><i class="availability-dot reserved-dot"></i>Varattu</span><span><i class="availability-dot unavailable-dot"></i>Ei vuokrattavissa</span></div></section></div>';d.style.display='block';d.scrollIntoView({behavior:'smooth',block:'start'})}
+function showDetail(k){var x=listings[k],d=el('detail');if(!x||!d)return;activeDetail=k;galleryIndex=0;delete calendarMonths[String(k)];var avail=(x.from||x.to)?((x.from?'Alkaen '+detailDate(x.from):'')+(x.from&&x.to?' – ':'')+(x.to?'asti '+detailDate(x.to):'')):'Saatavuus sovittavissa';var mail=String(x.contact||''),phone=String(x.phone||''),contactActions='';if(mail.indexOf('@')>0)contactActions+='<a class="contact-email contact-primary" href="mailto:'+esc(mail)+'?subject='+encodeURIComponent('Vuokrapörssi: '+x.title)+'&body='+encodeURIComponent('Hei! Olen kiinnostunut Vuokrapörssissä olevasta ilmoituksestasi: '+x.title+'.\n\nOnko kohde vielä saatavilla?')+'">✉ Lähetä sähköpostia</a>';if(phone)contactActions+='<a class="contact-email" href="tel:'+esc(phone.replace(/[^+0-9]/g,''))+'">☎ Soita '+esc(phone)+'</a>';if(!contactActions)contactActions='<p>Yhteystieto ei ole saatavilla.</p>';d.innerHTML='<div class="detail-top"><button class="detail-back" type="button" onclick="closeDetail()">← Takaisin ilmoituksiin</button><span class="detail-brand">VUOKRAPÖRSSI</span></div><div class="detail-layout"><div class="detail-gallery">'+galleryHtml(x)+'</div><aside class="detail-summary"><div class="detail-meta"><span class="card-category">'+esc(x.category)+'</span><span class="card-location">⌖ '+esc(x.city)+(x.postal?' · '+esc(x.postal):'')+'</span></div><h2>'+esc(x.title)+'</h2><div class="detail-price">'+Number(x.price).toLocaleString('fi-FI')+' € <small>/ '+esc(x.period)+'</small></div>'+availabilityBadge(x)+'<div class="detail-facts"><div class="detail-fact"><small>Sijainti</small><b>'+esc(x.city)+'</b></div><div class="detail-fact"><small>Saatavuus</small><b>'+avail+'</b></div></div><div class="detail-rule"></div><div class="contact-box"><span class="eyebrow">Kiinnostuitko?</span><h3>Ota yhteyttä vuokraajaan</h3><strong>'+esc(x.contactName)+'</strong><p class="contact-hint">Kysy saatavuudesta ja sovi vuokrauksen yksityiskohdat suoraan ilmoittajan kanssa.</p>'+contactActions+'<div class="trust-note"><b>Sopikaa ennen vuokrausta</b><span>Varmistakaa ainakin vuokra-aika, hinta, luovutus, palautus ja mahdollinen vakuus kirjallisesti.</span></div>'+(isVpAdmin()?'<button class="btn red" type="button" style="margin-top:14px;width:100%" onclick="adminDeleteListing('+k+')">Poista ilmoitus ylläpitäjänä</button>':'')+'</div></aside></div><div class="detail-info"><section class="detail-section"><span class="eyebrow">Ilmoituksen tiedot</span><h3>Kuvaus</h3><p class="detail-description">'+esc(x.description)+'</p></section><section class="detail-section"><span class="eyebrow">Milloin vapaa?</span><h3>Saatavuus</h3><p>'+avail+'</p><div id="cal-'+k+'">'+makeCalendar(x,k)+'</div><div class="availability-legend"><span><i class="availability-dot"></i>Saatavilla</span><span><i class="availability-dot reserved-dot"></i>Varattu</span><span><i class="availability-dot unavailable-dot"></i>Ei vuokrattavissa</span></div></section></div>';d.style.display='block';d.scrollIntoView({behavior:'smooth',block:'start'})}
 function gallerySelect(i){if(activeDetail<0)return;var imgs=getImages(listings[activeDetail]);if(!imgs.length)return;galleryIndex=(i+imgs.length)%imgs.length;var main=el('galleryMain');if(main)main.src=imgs[galleryIndex];var count=el('galleryCount');if(count)count.textContent=(galleryIndex+1)+' / '+imgs.length;var thumbs=document.querySelectorAll('.gallery-thumb');for(var j=0;j<thumbs.length;j++)thumbs[j].className='gallery-thumb '+(j===galleryIndex?'active':'');if(el('lightbox').className.indexOf('open')>=0)el('lightboxImage').src=imgs[galleryIndex]}
 function galleryStep(dir){if(activeDetail<0)return;gallerySelect(galleryIndex+dir)}function openLightbox(){if(activeDetail<0)return;var imgs=getImages(listings[activeDetail]);if(!imgs.length)return;el('lightboxImage').src=imgs[galleryIndex];el('lightbox').className='lightbox open';el('lightbox').setAttribute('aria-hidden','false')}function closeLightbox(){el('lightbox').className='lightbox';el('lightbox').setAttribute('aria-hidden','true')}document.addEventListener('keydown',function(e){var lb=el('lightbox');if(!lb||!lb.classList.contains('open'))return;if(e.key==='Escape')closeLightbox();else if(e.key==='ArrowLeft')galleryStep(-1);else if(e.key==='ArrowRight')galleryStep(1)});
-/* Sisäinen viestitoiminto. Tietokannan RLS valvoo luku- ja lähetysoikeuksia. */
-var vpMessages=[],vpActiveThread=null;
-async function vpMessageSession(){
- if(!sbAuth||!signedUser)throw new Error('Kirjaudu sisään lähettääksesi tai lukeaksesi viestejä.');
- var z=await sbAuth.auth.getSession(),session=z.data&&z.data.session;
- if(!session)throw new Error('Kirjautuminen on vanhentunut. Kirjaudu uudelleen.');
- return session;
-}
-async function vpFetchMessages(){
- var session=await vpMessageSession();
- var url=SUPABASE_URL+'/rest/v1/vp_messages?select=id,listing_id,sender_id,receiver_id,message,created_at&order=created_at.asc&limit=500';
- var res=await fetch(url,{headers:{apikey:SUPABASE_KEY,Authorization:'Bearer '+session.access_token}});
- if(!res.ok)throw new Error('Viestien haku epäonnistui ('+res.status+'): '+await res.text());
- return await res.json();
-}
-function vpThreadKey(m){
- var other=m.sender_id===signedUser.id?m.receiver_id:m.sender_id;
- return String(m.listing_id)+'|'+other;
-}
-function vpThreadTitle(id){
- var item=listings.find(function(x){return String(x.id)===String(id)})||ownRows.find(function(x){return String(x.id)===String(id)});
- return item?item.title:'Ilmoitus #'+id;
-}
-async function vpLoadMessages(){
- var list=el('vpMessageList');if(!list||!signedUser)return;
- list.textContent='Ladataan viestejä…';
- try{vpMessages=await vpFetchMessages();vpRenderInbox()}
- catch(e){list.textContent=e.message;console.error('Viestit:',e)}
-}
-function vpRenderInbox(){
- var list=el('vpMessageList');if(!list)return;
- var groups={};vpMessages.forEach(function(m){var key=vpThreadKey(m);(groups[key]||(groups[key]=[])).push(m)});
- var keys=Object.keys(groups).sort(function(a,b){return groups[b][groups[b].length-1].created_at.localeCompare(groups[a][groups[a].length-1].created_at)});
- list.innerHTML=keys.length?keys.map(function(key){
-  var last=groups[key][groups[key].length-1],id=String(last.listing_id);
-  return '<button class="vp-msg-thread" type="button" data-thread="'+esc(key)+'"><strong>'+esc(vpThreadTitle(id))+'</strong><small>'+esc(last.message.slice(0,110))+'</small></button>';
- }).join(''):'Ei viestejä vielä.';
- list.querySelectorAll('[data-thread]').forEach(function(btn){btn.onclick=function(){vpOpenThread(btn.getAttribute('data-thread'))}});
- if(vpActiveThread&&groups[vpActiveThread])vpOpenThread(vpActiveThread);
-}
-function vpOpenThread(key){
- vpActiveThread=key;
- var items=vpMessages.filter(function(m){return vpThreadKey(m)===key}),box=el('vpMessageConversation');
- if(!box||!items.length)return;
- var last=items[items.length-1],other=last.sender_id===signedUser.id?last.receiver_id:last.sender_id;
- box.innerHTML='<h3>Keskustelu: '+esc(vpThreadTitle(last.listing_id))+'</h3>'+
- items.map(function(m){return '<div class="vp-msg-bubble '+(m.sender_id===signedUser.id?'mine':'')+'"><small>'+(m.sender_id===signedUser.id?'Sinä':'Toinen osapuoli')+' · '+esc(new Date(m.created_at).toLocaleString('fi-FI'))+'</small><div>'+esc(m.message)+'</div></div>'}).join('')+
- '<div class="vp-msg-compose"><textarea id="vpReplyText" maxlength="3000" placeholder="Kirjoita vastaus…"></textarea><button class="btn" type="button" id="vpReplyButton">Lähetä vastaus</button><p id="vpReplyStatus" class="vp-msg-status" role="status"></p></div>';
- el('vpReplyButton').onclick=function(){vpSendMessage(last.listing_id,other,el('vpReplyText').value,'vpReplyStatus')};
-}
-async function vpSendMessage(listingId,receiverId,body,statusId){
- var status=el(statusId),message=String(body||'').trim();
- if(!message||message.length>3000){if(status)status.textContent='Kirjoita 1–3000 merkkiä pitkä viesti.';return}
- try{
-  var session=await vpMessageSession();
-  if(receiverId===signedUser.id)throw new Error('Et voi lähettää viestiä itsellesi.');
-  if(status)status.textContent='Lähetetään…';
-  var res=await fetch(SUPABASE_URL+'/rest/v1/vp_messages',{method:'POST',headers:{apikey:SUPABASE_KEY,Authorization:'Bearer '+session.access_token,'Content-Type':'application/json',Prefer:'return=minimal'},body:JSON.stringify({listing_id:listingId,sender_id:signedUser.id,receiver_id:receiverId,message:message})});
-  if(!res.ok)throw new Error('Lähetys epäonnistui ('+res.status+'): '+await res.text());
-  if(status)status.textContent='Viesti lähetetty.';
-  if(statusId==='vpNewMessageStatus'&&el('vpNewMessageText'))el('vpNewMessageText').value='';
-  if(statusId==='vpReplyStatus'&&el('vpReplyText'))el('vpReplyText').value='';
-  await vpLoadMessages();
- }catch(e){if(status)status.textContent=e.message;console.error('Viestin lähetys:',e)}
-}
-function vpStartMessage(index){
- var x=listings[index];if(!x)return;
- if(!signedUser){openLogin();return}
- if(!x.owner_id){alert('Tämän ilmoituksen omistajatunniste puuttuu tietokannasta tai sitä ei näytetä. Omistajuutta ei voi päätellä turvallisesti yhteystiedoista. Pyydä ilmoittajaa tarkistamaan ilmoituksen omistajuus.');return}
- if(x.owner_id===signedUser.id){alert('Tämä on oma ilmoituksesi.');return}
- var host=document.createElement('div');host.className='vp-msg-section';host.id='vpNewMessageBox';
- host.innerHTML='<h3>Viesti ilmoittajalle: '+esc(x.title)+'</h3><div class="vp-msg-compose"><textarea id="vpNewMessageText" maxlength="3000" placeholder="Hei! Olen kiinnostunut kohteesta…"></textarea><button class="btn" type="button" id="vpNewMessageSend">Lähetä yksityinen viesti</button><p class="vp-msg-status" id="vpNewMessageStatus" role="status"></p></div>';
- var old=el('vpNewMessageBox');if(old)old.remove();
- var d=el('detail');d.appendChild(host);
- el('vpNewMessageSend').onclick=function(){vpSendMessage(x.id,x.owner_id,el('vpNewMessageText').value,'vpNewMessageStatus')};
- host.scrollIntoView({behavior:'smooth',block:'center'});
-}
-
 function closeDetail(){closeLightbox();el('detail').style.display='none';activeDetail=-1}
 var calendarMonths={};
 function publicCalendarBounds(x){var min=x.from?new Date(x.from+'T12:00:00'):null,max=x.to?new Date(x.to+'T12:00:00'):null;return{min:min?new Date(min.getFullYear(),min.getMonth(),1):null,max:max?new Date(max.getFullYear(),max.getMonth(),1):null}}
