@@ -443,7 +443,7 @@ async function vpSendMessage(listingId,receiverId,body,statusId){
 function vpStartMessage(index){
  var x=listings[index];if(!x)return;
  if(!signedUser){openLogin();return}
- if(!x.owner_id){alert('Ilmoituksesta puuttuu omistajan tunniste. Viestiä ei voi lähettää.');return}
+ if(!x.owner_id){alert('Tämän ilmoituksen omistajatunniste puuttuu tietokannasta tai sitä ei näytetä. Omistajuutta ei voi päätellä turvallisesti yhteystiedoista. Pyydä ilmoittajaa tarkistamaan ilmoituksen omistajuus.');return}
  if(x.owner_id===signedUser.id){alert('Tämä on oma ilmoituksesi.');return}
  var host=document.createElement('div');host.className='vp-msg-section';host.id='vpNewMessageBox';
  host.innerHTML='<h3>Viesti ilmoittajalle: '+esc(x.title)+'</h3><div class="vp-msg-compose"><textarea id="vpNewMessageText" maxlength="3000" placeholder="Hei! Olen kiinnostunut kohteesta…"></textarea><button class="btn" type="button" id="vpNewMessageSend">Lähetä yksityinen viesti</button><p class="vp-msg-status" id="vpNewMessageStatus" role="status"></p></div>';
