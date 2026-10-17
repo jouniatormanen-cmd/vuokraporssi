@@ -1,6 +1,6 @@
 # Vuokrapörssi – käyttöehdot (TYÖLUONNOS)
 
-**Versio:** 0.1 / 17.10.2026  
+**Versio:** 0.2 / 17.10.2026  
 **Tila:** Tarkistettavaksi – ei vielä julkaistavaksi eikä hyväksyttäväksi rekisteröitymisen yhteydessä.
 
 > **Ennen julkaisua täydennettävä:** palveluntarjoajan virallinen nimi ja oikeudellinen asema, yhteysosoite, sähköposti, mahdollinen Y-tunnus, ilmoitusten käsittely- ja valituskanava, tietosuojaselosteen linkki, voimaantulopäivä. Tarkistettava myös, onko alusta DSA:n tarkoittama verkkoalusta / etäsopimusten tekemisen mahdollistava markkinapaikka ja mitkä lisävelvoitteet soveltuvat. Juridinen lopputarkistus suositeltava.
@@ -9,7 +9,7 @@
 
 Vuokrapörssi on verkkopalvelu, jossa yksityishenkilöt ja yritykset voivat julkaista vuokraus-, palvelu- ja elämysilmoituksia sekä hakuilmoituksia, selata ilmoituksia ja ottaa yhteyttä toisiinsa.
 
-Palvelun ylläpitäjä on **[palveluntarjoajan virallinen nimi, oikeudellinen asema, osoite ja yhteystiedot täydennetään]** (jäljempänä ”Vuokrapörssi”).
+Palvelua ylläpitää aluksi **yksityishenkilö**, ei perustettu yritys. Ylläpitäjän julkaistavat tunniste- ja yhteystiedot **[vahvistetaan ennen julkaisua]** (jäljempänä ”Vuokrapörssi”).
 
 Vuokrapörssi tarjoaa ilmoitus- ja yhteydenottokanavan. Ellei nimenomaisesti toisin ilmoiteta, Vuokrapörssi ei ole käyttäjien kesken syntyvän vuokra-, palvelu- tai muun sopimuksen osapuoli eikä ota vastaan vuokramaksuja tai vakuuksia.
 
@@ -92,7 +92,7 @@ Palvelun käyttöön sovelletaan Suomen lakia, kuitenkaan rajoittamatta kuluttaj
 
 ## Julkaisun estävät avoimet asiat
 
-1. Vahvistetaan ylläpitäjän oikeudellinen asema ja julkaistavat yhteystiedot.
+1. Ylläpitäjän oikeudellinen asema on päätetty: toiminta aloitetaan yksityishenkilönä. Vahvistetaan vielä julkaistavat tunniste- ja yhteystiedot.
 2. Toteutetaan ilmoittajan **yksityishenkilö / yritys** -valinta ja yritystietojen kerääminen ja näyttäminen.
 3. Laaditaan tietosuojaseloste todellista Supabase-/Google-kirjautumista, tietojen julkisuutta ja säilytysaikoja vastaavaksi.
 4. Toteutetaan lainmukainen laittoman sisällön ilmoituskanava, moderointikäytännöt ja tarvittavat perustelu-/valitusmenettelyt.
