@@ -778,6 +778,7 @@ async function initAuth(){
   var label=el('accountEmail');if(label)label.textContent=signedUser.email||'Kirjautunut';var accountNav=el('accountNav'),logoutNav=el('logoutNav');if(accountNav)accountNav.textContent='Oma Vuokrapörssi';if(logoutNav)logoutNav.style.display='inline-flex';var loginBtn=el('accountLoginBtn'),logoutBtn=el('accountLogoutBtn');if(loginBtn)loginBtn.style.display='none';if(logoutBtn)logoutBtn.style.display='';try{await loadProfile()}catch(profileError){console.warn('Vuokrapörssi: profiilin lataus epäonnistui, kirjautuminen säilyy',profileError)}
   if(handledUserId===signedUser.id)return;
   handledUserId=signedUser.id;
+  await loadListings();if(document.getElementById('wantedBrowseView')&&document.getElementById('wantedBrowseView').style.display==='block')renderWanted();
   closeLogin();
   await publishPendingDraft();
   if(fromRedirect&&!el('recoveryModal').classList.contains('open'))showAccount();
@@ -786,7 +787,7 @@ async function initAuth(){
   signedUser=session?session.user:null;
   var label=el('accountEmail');if(label)label.textContent=signedUser?signedUser.email:'Ei kirjautunut';var accountNav=el('accountNav'),logoutNav=el('logoutNav');if(accountNav)accountNav.textContent=signedUser?'Oma Vuokrapörssi':'Kirjaudu sisään';if(logoutNav)logoutNav.style.display=signedUser?'inline-flex':'none';var loginBtn=el('accountLoginBtn'),logoutBtn=el('accountLogoutBtn');if(loginBtn)loginBtn.style.display=signedUser?'none':'';if(logoutBtn)logoutBtn.style.display=signedUser?'':'none';if(!signedUser){accountProfile={name:'',phone:''};renderProfile()}
   if(event==='PASSWORD_RECOVERY'){openRecovery();return}
-  if(event==='SIGNED_OUT'){handledUserId=null;ownRows=[];return}
+  if(event==='SIGNED_OUT'){handledUserId=null;ownRows=[];listings=listings.map(function(x){return Object.assign({},x,{contactName:'',contact:'',phone:''})});if(typeof closeDetail==='function')closeDetail();render();loadListings();if(document.getElementById('wantedBrowseView')&&document.getElementById('wantedBrowseView').style.display==='block')renderWanted();return}
   if((event==='SIGNED_IN'||event==='INITIAL_SESSION')&&session&&session.user){
    setTimeout(function(){acceptSession(session,!!(location.hash.match(/access_token=/)||location.search.match(/code=/)))},0);
   }
