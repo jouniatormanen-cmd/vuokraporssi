@@ -515,6 +515,24 @@ body>header{background:rgba(255,255,255,.96)!important;border-bottom:1px solid #
 #homeView #catPicker.open,#homeView #subcatPicker.open{z-index:120!important}
 #homeView #catPicker .vp-select-menu,#homeView #subcatPicker .vp-select-menu{z-index:121!important;max-height:290px!important;overflow-y:auto!important;overscroll-behavior:contain!important}
 #homeView #catPicker .vp-select-option,#homeView #subcatPicker .vp-select-option{cursor:pointer!important;min-height:42px!important;touch-action:manipulation!important}
+
+/* v0.10 maisema-hero: kuvituksen inspiroima, rauhallinen suomalainen järvimaisema */
+.hero{position:relative!important;isolation:isolate!important;overflow:hidden!important;min-height:490px!important;padding:68px max(5vw,24px) 94px!important;text-align:left!important;background:#e5efe8!important;border-bottom:0!important}
+.hero::before{content:"";position:absolute;inset:0;z-index:-2;background-image:url("https://images.unsplash.com/photo-1470770841072-f978cf4d019e?auto=format&fit=crop&w=2200&q=85");background-position:center 51%;background-size:cover;background-repeat:no-repeat;animation:vpHeroBreath 32s ease-in-out infinite alternate}
+.hero::after{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(90deg,rgba(251,252,247,.93) 0%,rgba(249,251,245,.84) 30%,rgba(246,249,241,.48) 55%,rgba(248,251,246,.06) 100%)}
+.hero h1,.hero h1.brand-strike{position:relative!important;text-align:left!important;margin:0!important;max-width:760px!important;font-size:clamp(55px,7vw,104px)!important;letter-spacing:-.055em!important;line-height:1.02!important;color:#122b25!important;text-shadow:0 1px 3px rgba(255,255,255,.35)}
+.hero h1 em{color:#078047!important;font-style:normal!important}
+.hero>p:not(.vp-free-message){text-align:left!important;max-width:610px!important;margin:18px 0!important;color:#203b30!important;font-size:clamp(17px,1.7vw,22px)!important;line-height:1.5!important}
+.hero .vp-free-message{display:inline-block!important;text-align:left!important;margin:18px 0 10px!important;max-width:630px!important;background:rgba(255,255,255,.82)!important;border:1px solid rgba(34,123,76,.22)!important;box-shadow:0 5px 24px rgba(20,70,40,.07)!important;color:#23533b!important;backdrop-filter:blur(6px)}
+.hero .hero-hook{display:block!important;text-align:left!important;max-width:630px!important;margin:0 0 13px!important;color:#197247!important;letter-spacing:.18em!important;font-weight:850!important}
+.hero .hero-actions{justify-content:flex-start!important;display:flex!important;flex-wrap:wrap!important;gap:12px!important;margin-top:22px!important}
+.hero .hero-actions .btn{box-shadow:0 7px 22px rgba(19,69,40,.15)!important}
+#homeView>.searchbox{position:relative!important;z-index:5!important;margin:-51px 0 25px!important;border-radius:23px!important;padding:25px!important;box-shadow:0 17px 42px rgba(29,69,44,.16)!important}
+#homeView>.searchbox .search-title h2{color:#18372a!important}
+@keyframes vpHeroBreath{from{transform:scale(1)}to{transform:scale(1.055)}}
+@media(max-width:850px){.hero{min-height:420px!important;padding:46px 24px 84px!important}.hero::after{background:linear-gradient(90deg,rgba(250,252,247,.95),rgba(250,252,247,.72) 70%,rgba(250,252,247,.3))}.hero h1,.hero h1.brand-strike{font-size:clamp(46px,9vw,76px)!important}#homeView>.searchbox{margin-top:-42px!important;padding:18px!important}}
+@media(max-width:550px){.hero{min-height:0!important;padding:36px 18px 76px!important}.hero::after{background:linear-gradient(90deg,rgba(251,252,247,.95),rgba(251,252,247,.78))}.hero h1,.hero h1.brand-strike{font-size:clamp(43px,11vw,61px)!important}.hero .hero-actions{flex-direction:column!important;align-items:stretch!important}.hero .hero-actions .btn{width:100%!important}#homeView>.searchbox{margin:-35px 8px 20px!important}}
+@media(prefers-reduced-motion:reduce){.hero::before{animation:none!important}}
 </style>
 </head>
 <body>
