@@ -594,6 +594,43 @@ header .topnav #navCreate:hover,
 header .topnav #navCreate:focus-visible,
 .hero .hero-actions .btn:focus-visible,
 #homeView .how-section .steps>div>b:focus-visible{outline:3px solid #e7b64b!important;outline-offset:3px!important}
+
+/* v0.10 – yhtenäinen saavutettava kontrasti kaikissa näkymissä.
+   Vain toimintopainikkeet, ei lomakkeiden vaaleita kenttiä tai varoitusnappeja. */
+body button.btn:not(.red):not(.danger):not(.light):not(.ghost),
+body a.btn:not(.red):not(.danger):not(.light):not(.ghost),
+body input[type="submit"].btn:not(.red):not(.danger),
+body button.contact-primary,
+body button.primary-action,
+body .own-actions .primary-action,
+body button.search-go,
+body button.owner-button,
+body button.navadd,
+body header .topnav button#navCreate,
+body #homeView .steps>div>b,
+body #homeView .how-section .steps>div>b {
+  background-color:#176b40!important;
+  background-image:none!important;
+  color:#fff!important;
+  -webkit-text-fill-color:#fff!important;
+  border-color:#115534!important;
+  text-shadow:none!important;
+}
+body button.btn:not(.red):not(.danger):not(.light):not(.ghost) :is(span,strong,b,small,i),
+body a.btn:not(.red):not(.danger):not(.light):not(.ghost) :is(span,strong,b,small,i),
+body button.contact-primary :is(span,strong,b,small,i),
+body button.primary-action :is(span,strong,b,small,i),
+body button.search-go :is(span,strong,b,small,i),
+body button.owner-button :is(span,strong,b,small,i){
+  color:#fff!important;-webkit-text-fill-color:#fff!important;
+}
+body button.btn.light,body a.btn.light{color:#fff!important;-webkit-text-fill-color:#fff!important;background-color:#155a3a!important;background-image:none!important;border-color:#104a30!important}
+body button.btn:not(.red):not(.danger):hover,
+body button.contact-primary:hover,
+body button.search-go:hover{background-color:#105231!important}
+body button.btn:focus-visible,body a.btn:focus-visible,body button.search-go:focus-visible{
+outline:3px solid #e7b64b!important;outline-offset:3px!important;
+}
 </style>
 </head>
 <body>
