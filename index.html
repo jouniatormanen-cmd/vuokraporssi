@@ -497,6 +497,16 @@ body>header{background:rgba(255,255,255,.96)!important;border-bottom:1px solid #
 @media(max-width:760px){#homeView .search-primary{grid-template-columns:1fr!important}#homeView .search-primary>*{width:100%!important}#homeView .advanced-search .advanced-grid{grid-template-columns:1fr!important}#homeView .cards{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:10px!important}#homeView .cards .market-card .mainimg{height:170px!important}#homeView .cards .market-card .card-body{padding:11px!important}#homeView .cards .market-card h3{font-size:16px!important}#homeView .vp-safety-symbol{display:none!important}#homeView .vp-safety-compact{padding:17px!important}}
 @media(max-width:480px){#homeView .cards{grid-template-columns:1fr!important}#homeView .cards .market-card .mainimg{height:215px!important}#homeView .vp-empty-actions .btn{width:100%!important}}
 @media(prefers-reduced-motion:reduce){#homeView .cards .market-card{transition:none!important}}
+
+/* Haku etenee johdonmukaisesti ilman hyppelyä lisävalikoihin */
+#homeView .search-primary{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;align-items:end!important;gap:14px!important}
+#homeView .search-primary>.vp-keyword-top{grid-column:1/-1!important}
+#homeView .search-primary>.search-go{grid-column:1/-1!important;width:100%!important;max-width:340px!important;justify-self:start!important}
+#homeView .search-primary>label{display:block!important;min-width:0!important}
+#homeView .search-primary label .vp-select{width:100%!important}
+#homeView .search-primary .vp-select-button{width:100%!important;text-align:left!important}
+#homeView .advanced-search .advanced-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+@media(max-width:760px){#homeView .search-primary{grid-template-columns:1fr!important}#homeView .search-primary>.vp-keyword-top,#homeView .search-primary>.search-go{grid-column:1!important}#homeView .search-primary>.search-go{max-width:none!important}#homeView .advanced-search .advanced-grid{grid-template-columns:1fr!important}}
 </style>
 </head>
 <body>
@@ -919,5 +929,39 @@ function vpShowAllListings(){window.vpListingPage=1;var search=document.getEleme
 function vpRenderShowcase(){var target=document.getElementById('vpShowcaseCards');if(!target||!Array.isArray(window.listings))return;var pool=listings.filter(function(x){return x.status!=='paused'}),chosen=[],used={};pool.forEach(function(x){if(chosen.length>=6)return;var cat=(x.category||'').split(' › ')[0];if(!used[cat]){used[cat]=true;chosen.push(x)}});pool.forEach(function(x){if(chosen.length<6&&chosen.indexOf(x)<0)chosen.push(x)});if(!chosen.length){target.innerHTML='<p class="muted">Ensimmäiset kohteet ilmestyvät tähän, kun ilmoituksia julkaistaan.</p>';return}target.innerHTML=chosen.map(function(x){var k=listings.indexOf(x),img=getImages(x).length?'<img class="mainimg" src="'+esc(getImages(x)[0])+'" alt="'+esc(x.title)+'" loading="lazy">':'<div class="no-image"><b>VP</b><span>Vuokrapörssi</span></div>';return '<article class="card market-card" role="button" tabindex="0" onclick="showDetail('+k+')" onkeydown="cardKey(event,'+k+')"><div class="card-media">'+img+'</div><div class="card-body"><div class="card-category">'+esc(x.category||'')+'</div><h3>'+esc(x.title)+'</h3><div class="card-location">⌖ '+esc(x.city||'')+'</div><div class="price">'+Number(x.price||0).toLocaleString('fi-FI')+' € <small>/ '+esc(x.period||'vrk')+'</small></div></div></article>'}).join('')}
 var vpOriginalRender=render;render=function(){vpOriginalRender.apply(this,arguments);vpRenderShowcase()};
 </script>
-<script id="vp-simple-search-setup">(function(){function setup(){var primary=document.querySelector('#homeView .search-primary'),advanced=document.querySelector('#homeView .advanced-search .advanced-grid'),keyword=document.querySelector('#homeView .advanced-keyword');if(!primary||!advanced||!keyword)return;keyword.classList.add('vp-keyword-top');primary.insertBefore(keyword,primary.firstChild);var category=document.getElementById('catFilter');if(category&&category.closest('label'))primary.insertBefore(category.closest('label'),keyword.nextSibling);['subcatFilter','regionPicker','cityPicker'].forEach(function(id){var node=document.getElementById(id);var label=node&&node.closest('label');if(label)advanced.insertBefore(label,advanced.firstChild)});var summary=document.querySelector('#homeView .advanced-search summary');if(summary)summary.textContent='Lisää rajauksia: alue, alakategoria, hinta ja saatavuus';var input=document.getElementById('search');if(input)input.placeholder='Mitä haluaisit vuokrata? Esim. peräkärry';}if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',setup);else setup();})();</script>
+<script id="vp-simple-search-setup">(function(){
+function setup(){
+ var primary=document.querySelector('#homeView .search-primary');
+ var advanced=document.querySelector('#homeView .advanced-search .advanced-grid');
+ var keyword=document.querySelector('#homeView .advanced-keyword');
+ if(!primary||!advanced||!keyword)return;
+ var cat=document.getElementById('catFilter');
+ var sub=document.getElementById('subcatFilter');
+ var region=document.getElementById('regionPicker');
+ var city=document.getElementById('cityPicker');
+ var submit=primary.querySelector('.search-go');
+ var details=document.querySelector('#homeView .advanced-search');
+ var summary=details&&details.querySelector('summary');
+ function move(id,container){var node=document.getElementById(id),label=node&&node.closest('label');if(label)container.appendChild(label)}
+ /* Looginen järjestys: hakusana, pääkategoria, alakategoria, maakunta, paikkakunta, haku */
+ keyword.classList.add('vp-keyword-top');
+ primary.insertBefore(keyword,primary.firstChild);
+ if(cat)move('catFilter',primary);
+ if(sub)move('subcatFilter',primary);
+ if(region)move('regionPicker',primary);
+ if(city)move('cityPicker',primary);
+ if(submit)primary.appendChild(submit);
+ if(summary)summary.textContent='Tarkemmat rajaukset: hinta, ajankohta ja järjestys';
+ var input=document.getElementById('search');
+ if(input){input.placeholder='Esim. peräkärry, mökki tai työkalu';var label=input.closest('label');if(label&&label.firstChild&&label.firstChild.nodeType===3)label.firstChild.nodeValue='Mitä etsit?';}
+ var regionLabel=region&&region.closest('label');
+ if(regionLabel&&regionLabel.firstChild&&regionLabel.firstChild.nodeType===3)regionLabel.firstChild.nodeValue='Maakunta (valinnainen)';
+ var cityLabel=city&&city.closest('label');
+ if(cityLabel&&cityLabel.firstChild&&cityLabel.firstChild.nodeType===3)cityLabel.firstChild.nodeValue='Paikkakunta (valinnainen, valitse maakunta ensin)';
+ if(region&&region.querySelector('.vp-select-button'))region.querySelector('.vp-select-button').setAttribute('aria-label','Valitse maakunta tai koko Suomi');
+ if(city&&city.querySelector('.vp-select-button'))city.querySelector('.vp-select-button').setAttribute('aria-label','Valitse paikkakunta maakunnan valinnan jälkeen');
+ if(details)details.open=false;
+}
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',setup);else setup();
+})();</script>
 </body></html>
