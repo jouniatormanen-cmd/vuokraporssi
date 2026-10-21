@@ -681,6 +681,25 @@ background:#eef1ee!important;border:1px solid #cedad0!important;color:#20372a!im
 #homeView .vp-discovery-route strong{display:block;font-size:15px;color:#19452d}
 #homeView .vp-discovery-route small{display:block;font-size:12px;color:#52695a;margin-top:3px}
 @media(max-width:700px){#homeView .vp-discovery-routes{grid-template-columns:1fr;gap:7px}#homeView .vp-discovery-route{min-height:54px;padding:9px 13px}#homeView .vp-discovery-route small{display:none}}
+
+/* Korjaus: hakulomakkeen negatiivinen ylämarginaali ei saa peittää pikavalintoja. */
+#homeView>.vp-discovery-routes{
+ position:relative!important;z-index:6!important;
+ margin:18px 0 18px!important;
+ padding:0!important;
+}
+#homeView>.searchbox{
+ margin:0 0 25px!important;
+ position:relative!important;z-index:5!important;
+}
+@media(max-width:850px){
+ #homeView>.vp-discovery-routes{margin:14px 8px 14px!important}
+ #homeView>.searchbox{margin:0 8px 20px!important}
+}
+@media(max-width:550px){
+ #homeView>.vp-discovery-routes{margin:12px 8px 12px!important}
+ #homeView>.searchbox{margin:0 8px 20px!important}
+}
 </style>
 </head>
 <body>
