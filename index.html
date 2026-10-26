@@ -487,6 +487,15 @@ header .topnav .navlink:focus-visible{color:#0d6035!important}
 #homeView .searchbox :is(h1,h2,h3,p,label,small),#homeView .search-panel :is(h1,h2,h3,p,label,small),#homeView .category-card :is(h2,h3,p,span,strong),#homeView .listingsbox> :is(h2,h3,p),#createView .formbox :is(label,h2,h3,p,small),#wantedBrowseView .box :is(label,h2,h3,p,small){color:#173d2a!important}
 #createView .formbox .form-progress span.active{color:#fff!important}
 #homeView .vp-browse-tab.vp-browse-active{color:#fff!important}
+</style><style id="vp-account-contrast-consistent">
+/* Oma Vuokrapörssi: tummat kortit, vaaleat tekstit; ei vihreää vihreällä. */
+#accountView .own-card,#accountView .account-pill,#accountView .account-filter{background:#10271c!important;color:#f5fff8!important;border-color:#426b52!important}
+#accountView .own-card :is(h2,h3,h4,p,span,strong,small,.muted,.own-placeholder,.own-status),#accountView .account-pill b,#accountView .account-filter.active{color:#f5fff8!important}
+#accountView .own-status.active{background:#d6f4df!important;color:#123b27!important;border-color:#7aab89!important}
+#accountView .own-card .own-status.active{color:#123b27!important}
+#accountView .account-filter.active{background:#245a3b!important;color:#fff!important}
+#accountView .own-card .btn.light{background:#e6f1e9!important;color:#123b27!important}
+#accountView .account-head h1,#accountView .account-head p,#accountView .account-section-head h2{color:#f5fff8!important}
 </style></head>
 <body>
 
@@ -648,12 +657,12 @@ function fillFormSubcategories(){var p=el('formCat'),s=el('formSubcat');if(!p||!
 function syncFormCategoryValue(){var p=el('formCat'),s=el('formSubcat'),h=el('formCategoryValue');if(h)h.value=p&&s&&p.value&&s.value?p.value+' › '+s.value:''}
 function browseAllListings(){showHome();setTimeout(function(){resetSearchForm();render();var target=document.querySelector('.listingsbox');if(target)target.scrollIntoView({behavior:'auto',block:'start'})},0)}
 function runListingSearch(){closeVpSelects();var region=el('regionFilter');var city=el('cityFilter');if(region&&(region.value===''||normFilter(region.value)==='koko suomi')){region.value='';if(city)city.value=''}render();var target=document.querySelector('.listingsbox');if(target){target.classList.add('results-highlight');target.scrollIntoView({behavior:'smooth',block:'start'});setTimeout(function(){target.classList.remove('results-highlight')},900)}}
-function browseCategories(){el('accountView').style.display='none';el('createView').style.display='none';el('homeView').style.display='block';var hero=document.querySelector('.hero');if(hero)hero.style.display='';closeDetail();setTimeout(function(){var target=document.querySelector('.category-section');if(target)target.scrollIntoView({behavior:'smooth',block:'start'})},0)}
+function browseCategories(){el('wantedView').style.display='none';el('wantedBrowseView').style.display='none';el('accountView').style.display='none';el('createView').style.display='none';el('homeView').style.display='block';var hero=document.querySelector('.hero');if(hero)hero.style.display='';closeDetail();['search','catFilter','subcatFilter','regionFilter','cityFilter','availabilityFilter'].forEach(function(id){var x=el(id);if(x)x.value=''});var categoryPicker=el('regionPicker'),cityPicker=el('cityPicker');if(categoryPicker){var b=categoryPicker.querySelector('.vp-select-button');if(b)b.innerHTML='Koko Suomi <span>⌄</span>'}if(cityPicker){var b=cityPicker.querySelector('.vp-select-button');if(b){b.innerHTML='Valitse ensin maakunta <span>⌄</span>';b.disabled=true}}render();loadListings();setTimeout(function(){var target=document.querySelector('.category-section');if(target)target.scrollIntoView({behavior:'smooth',block:'start'})},0)}
 function toggleMobileMenu(){var m=el('mobileMenu'),b=document.querySelector('.mobile-menu-toggle');if(!m)return;var open=m.classList.toggle('open');if(b){b.setAttribute('aria-expanded',open?'true':'false');b.textContent=open?'×':'☰'}}
 function closeMobileMenu(){var m=el('mobileMenu'),b=document.querySelector('.mobile-menu-toggle');if(m)m.classList.remove('open');if(b){b.setAttribute('aria-expanded','false');b.textContent='☰'}}
 function mobileGo(where){closeMobileMenu();if(where==='home')showHome();else if(where==='browse')browseCategories();else if(where==='create')showCreate();else if(where==='account')showAccount()}
 document.addEventListener('click',function(e){var m=el('mobileMenu'),b=document.querySelector('.mobile-menu-toggle');if(m&&m.classList.contains('open')&&!m.contains(e.target)&&b&&!b.contains(e.target))closeMobileMenu()});
-function showHome(){el('accountView').style.display='none';el('createView').style.display='none';el('homeView').style.display='block';var hero=document.querySelector('.hero');if(hero)hero.style.display='';closeDetail();window.scrollTo({top:0,behavior:'smooth'})}
+function showHome(){el('wantedView').style.display='none';el('wantedBrowseView').style.display='none';el('accountView').style.display='none';el('createView').style.display='none';el('homeView').style.display='block';var hero=document.querySelector('.hero');if(hero)hero.style.display='';closeDetail();window.scrollTo({top:0,behavior:'smooth'})}
 var currentFormStep=0;
 function validateFormStep(step){
  var f=el('form'),fields=[];
@@ -668,7 +677,7 @@ function formStep(n){if(n>currentFormStep&&!validateFormStep(currentFormStep))re
 function showPostChoice(){var d=document.getElementById('vpPostChoice');if(d){d.style.display='flex';var b=d.querySelector('.vp-choice-option');if(b)b.focus()}}
 function closePostChoice(){var d=document.getElementById('vpPostChoice');if(d)d.style.display='none'}
 document.addEventListener('keydown',function(e){if(e.key==='Escape')closePostChoice()});
-function showCreate(){editingId=null;el('accountView').style.display='none';el('homeView').style.display='none';el('createView').style.display='block';var hero=document.querySelector('.hero');if(hero)hero.style.display='none';if(signedUser){var p=getProfile(),f=el('form');if(f){if(p.name&&f.elements.contactName&&!f.elements.contactName.value)f.elements.contactName.value=p.name;if(signedUser.email&&f.elements.contact&&!f.elements.contact.value)f.elements.contact.value=signedUser.email}}formStep(0);window.scrollTo({top:0,behavior:'smooth'})}
+function showCreate(){el('wantedView').style.display='none';el('wantedBrowseView').style.display='none';editingId=null;el('accountView').style.display='none';el('homeView').style.display='none';el('createView').style.display='block';var hero=document.querySelector('.hero');if(hero)hero.style.display='none';if(signedUser){var p=getProfile(),f=el('form');if(f){if(p.name&&f.elements.contactName&&!f.elements.contactName.value)f.elements.contactName.value=p.name;if(signedUser.email&&f.elements.contact&&!f.elements.contact.value)f.elements.contact.value=signedUser.email}}formStep(0);window.scrollTo({top:0,behavior:'smooth'})}
 function showSmartNeed(){showHome();setTimeout(function(){var x=el('smartNeed');if(x){x.scrollIntoView({behavior:'smooth',block:'center'});x.focus()}},250)}
 function smartNeedDemo(){var q=(el('smartNeed').value||'').trim();if(!q){el('smartResult').textContent='Kirjoita ensin mitä tarvitset.';return}var words=q.toLowerCase().split(/\s+/).filter(function(w){return w.length>3}),matches=listings.filter(function(x){var h=(x.title+' '+x.description+' '+x.category+' '+x.city).toLowerCase();return words.some(function(w){return h.indexOf(w)>=0})});el('smartResult').innerHTML=matches.length?'✦ Löysin nykyisistä ilmoituksista '+matches.length+' mahdollista osumaa. <button class="btn light" type="button" onclick="showSmartMatches()">Näytä osumat</button>':'✦ Nykyisistä ilmoituksista ei löytynyt selvää osumaa. Tästä voisi tehdä vuokrauspyynnön.'}
 function showSmartMatches(){var q=(el('smartNeed').value||'').trim().split(/\s+/).filter(function(w){return w.length>3})[0]||'';clearSearch();el('search').value=q;render();document.querySelector('.listingsbox').scrollIntoView({behavior:'smooth'})}
@@ -728,7 +737,7 @@ el('cards').innerHTML=empty;var pager=el('vpListingPager');if(pager){pager.hidde
 
 var ownRows=[];
 var ownFilter='all';
-function showAccount(){if(!signedUser){openLogin();return}loadOwnRows();loadOwnWanted();el('homeView').style.display='none';el('createView').style.display='none';el('accountView').style.display='block';var hero=document.querySelector('.hero');if(hero)hero.style.display='none';closeDetail();renderOwnListings();window.scrollTo({top:0,behavior:'smooth'})}
+function showAccount(){if(!signedUser){openLogin();return}el('wantedView').style.display='none';el('wantedBrowseView').style.display='none';loadOwnRows();loadOwnWanted();el('homeView').style.display='none';el('createView').style.display='none';el('accountView').style.display='block';var hero=document.querySelector('.hero');if(hero)hero.style.display='none';closeDetail();renderOwnListings();window.scrollTo({top:0,behavior:'smooth'})}
 function accountDemoListings(){return ownRows}
 function ownState(x,i){return x.status==='paused'?'paused':'active'}
 function setOwnFilter(v,btn){ownFilter=v;document.querySelectorAll('.account-filter').forEach(function(b){b.classList.toggle('active',b===btn)});renderOwnListings()}
