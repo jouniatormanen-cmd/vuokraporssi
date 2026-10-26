@@ -427,7 +427,8 @@ header .topnav .navlink:focus-visible{color:#0d6035!important}
 <style id="vp-varjoluoto-yhteistyo-style">.vp-varjoluoto-yhteistyo{display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:6px 12px;background:#11271d;color:#e5f5e9;padding:9px 16px;text-align:center;border-bottom:1px solid #315542;font:500 12px/1.5 system-ui,sans-serif}.vp-varjoluoto-yhteistyo span{font-size:10px;letter-spacing:.11em;text-transform:uppercase;color:#bad3c2}.vp-varjoluoto-yhteistyo a{color:#d3f6de;font-weight:750;text-decoration:underline;text-underline-offset:3px}.vp-varjoluoto-yhteistyo small{color:#b7cebf;font-size:11px}@media(max-width:500px){.vp-varjoluoto-yhteistyo{gap:3px 8px;padding:8px}.vp-varjoluoto-yhteistyo small{width:100%}}</style>
 <style id="vp-partner-mid-style">.vp-partner-mid{max-width:1050px;margin:30px auto;padding:22px 20px;text-align:center;border:1px solid #315542;border-radius:18px;background:#0e2018}.vp-partner-mid-intro{margin:0 0 10px;color:#d6e7da;font-size:14px}.vp-partner-mid .vp-varjoluoto-yhteistyo{background:transparent;border:0;padding:4px 0}.vp-partner-mid .vp-varjoluoto-yhteistyo a{font-size:16px}@media(max-width:600px){.vp-partner-mid{margin:22px 14px;padding:18px 12px}}
 /* Luettavuuskorjaus: vihreillä pinnoilla olevat korostustekstit vaaleiksi. */
-.price,.eyebrow,.pulse-item span,.benefit-grid article>span,.card-category,.card-arrow,.brand-strike em,.brand-promise>div:nth-child(3) strong,.footer-brand em,.no-image b,.detail-price,.own-placeholder,.own-status.active,.account-filter.active,.form-progress span.active,.vp-select-option.selected{color:#e8fff1!important}
+/* Väri määräytyy aina taustan mukaan; ei yleistä vaaleaa pakotusta. */
+#detail .detail-price,#accountView .own-placeholder{color:#e8fff1!important}
 </style>
 <style id="vp-own-contrast-fix">
 /* Omien ilmoitusten korttien luettavuus myös mobiilissa. */
@@ -473,6 +474,22 @@ header .topnav .navlink:focus-visible{color:#0d6035!important}
 #cards .card h3,#cards .card p,#cards .card small,#cards .card strong,#cards .card span,#cards .card .price,#cards .card .eyebrow,#cards .card .muted,#cards .card .card-category,#cards .card .card-arrow,#cards .card .card-title,#cards .card .card-meta{color:#173d2a!important}
 #cards .card .muted,#cards .card small{color:#365b46!important}
 #cards .card .btn{color:#082416!important}
+</style>
+
+<style id="vp-sitewide-readable-contrast">
+/* Vaaleat etusivun alueet: kaikki otsikot ja leipätekstit tummiksi. */
+.hero:not(.hero-dark) .hero-subtitle,.hero:not(.hero-dark) .hero-hook,.hero:not(.hero-dark) .brand-strike,.hero:not(.hero-dark) .brand-strike em{color:#123b27!important}
+.how-section,.how-section h2,.how-section .eyebrow,.how-section .steps>div,.how-section .steps strong,.how-section .steps p,.how-section .steps b{color:#173d2a!important}
+.owner-cta,.owner-cta h2,.owner-cta p,.owner-cta strong,.owner-cta .eyebrow,.owner-cta .owner-points span{color:#173d2a!important}
+.category-section,.category-section h2,.category-section .eyebrow,.category-section p,.category-section .category-card,.category-section .category-name{color:#173d2a!important}
+.listingsbox,.listingsbox h2,.listingsbox p,.listingsbox .eyebrow,.listingsbox .muted{color:#173d2a!important}
+#cards .card,#cards .card h3,#cards .card p,#cards .card strong,#cards .card .price,#cards .card .card-category,#cards .card .card-arrow,#cards .card .muted{color:#173d2a!important}
+.search-panel,.search-panel label,.search-panel .eyebrow,.search-panel p,.searchbox,.searchbox label,.searchbox p{color:#173d2a!important}
+.search-panel input,.search-panel select,.search-panel textarea,.searchbox input,.searchbox select{color:#173d2a!important;background:#fff!important}
+/* Väripareja myös esittelyosioihin, joiden pohja on vaalea. */
+.experience-showcase,.experience-showcase h2,.experience-showcase h3,.experience-showcase p,.experience-showcase .eyebrow,.experience-tile,.experience-tile p,.experience-tile strong{color:#173d2a!important}
+/* Tummien lomakkeiden ja omien tietojen tekstien luettavuus säilytetään. */
+#createView .formbox .eyebrow,#accountView .account-profile .eyebrow{color:#f4fff8!important}
 </style>
 </head>
 <body>
