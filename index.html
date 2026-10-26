@@ -560,6 +560,20 @@ header .topnav .navlink:focus-visible{color:#0d6035!important}
 /* Hakuilmoituksen tyyppimerkinnän ja otsikon väliin selkeä väli. */
 #wantedCards .vp-wanted-tag,#ownWantedListings .vp-wanted-tag{display:table!important;width:max-content;max-width:100%;margin:0 0 14px!important;line-height:1.35}
 #wantedCards .vp-wanted-tag+strong,#ownWantedListings .vp-wanted-tag+strong{display:block!important;margin:0 0 10px!important;line-height:1.4}
+</style><style id="vp-dark-green-boxes-light-text">
+/* Tummanvihreissä kortti- ja valintalaatikoissa vaalea teksti. Vaaleita lomakkeita ei muuteta. */
+#homeView .category-card,#homeView .category-card :is(.category-name,.category-icon,small,strong,span,p),
+#homeView .win-win,#homeView .win-win :is(b,small,span),
+#homeView .vp27 .vp27-pill,
+#homeView .vp27 details summary,
+#homeView .vp27 details summary :is(span,strong,small),
+#accountView .own-card,#accountView .own-card :is(h3,p,.own-meta,.own-price,.own-availability){
+ color:#f3faf5!important;-webkit-text-fill-color:#f3faf5!important;
+}
+#homeView .category-card{background:linear-gradient(145deg,#17432c,#10281c)!important;border-color:#57866a!important}
+#homeView .category-card:hover{background:#205238!important}
+#homeView .category-card:focus-visible{outline:3px solid #c9f5d6;outline-offset:2px}
+#homeView .vp27 details summary{background:#185537!important;color:#fff!important;-webkit-text-fill-color:#fff!important}
 </style></head>
 <body>
 
