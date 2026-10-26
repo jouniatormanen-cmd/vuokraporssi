@@ -428,7 +428,19 @@ header .topnav .navlink:focus-visible{color:#0d6035!important}
 <style id="vp-partner-mid-style">.vp-partner-mid{max-width:1050px;margin:30px auto;padding:22px 20px;text-align:center;border:1px solid #315542;border-radius:18px;background:#0e2018}.vp-partner-mid-intro{margin:0 0 10px;color:#d6e7da;font-size:14px}.vp-partner-mid .vp-varjoluoto-yhteistyo{background:transparent;border:0;padding:4px 0}.vp-partner-mid .vp-varjoluoto-yhteistyo a{font-size:16px}@media(max-width:600px){.vp-partner-mid{margin:22px 14px;padding:18px 12px}}
 /* Luettavuuskorjaus: vihreillä pinnoilla olevat korostustekstit vaaleiksi. */
 .price,.eyebrow,.pulse-item span,.benefit-grid article>span,.card-category,.card-arrow,.brand-strike em,.brand-promise>div:nth-child(3) strong,.footer-brand em,.no-image b,.detail-price,.own-placeholder,.own-status.active,.account-filter.active,.form-progress span.active,.vp-select-option.selected{color:#e8fff1!important}
-</style></head>
+</style>
+<style id="vp-own-contrast-fix">
+/* Omien ilmoitusten korttien luettavuus myös mobiilissa. */
+#accountView .own-card{background:#10251b!important;color:#f5fff9!important}
+#accountView .own-card .own-main,#accountView .own-card .own-titleline,#accountView .own-card h3,#accountView .own-card strong,#accountView .own-card .own-price{color:#f5fff9!important}
+#accountView .own-card .own-meta,#accountView .own-card .own-availability,#accountView .own-card p,#accountView .own-card small{color:#d5e9dd!important}
+#accountView .own-card .own-status.active{background:#19442d!important;color:#f2fff7!important;border-color:#5ba77a!important}
+#accountView .own-card .own-status.paused{color:#e0e9e3!important}
+#accountView .own-card .own-actions button{background:#193529!important;color:#f5fff9!important;border-color:#5a8068!important}
+#accountView .own-card .own-actions button.primary-action{background:#43e38f!important;color:#062416!important}
+#accountView .own-card [data-own-wanted-delete]{background:#193529!important;color:#f5fff9!important}
+</style>
+</head>
 <body>
 
 <header><button class="brand-lockup" type="button" onclick="showHome()" aria-label="Vuokrapörssi – etusivu"><svg class="vp-mark vp-landscape-mark" viewBox="0 0 250 72" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
