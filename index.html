@@ -948,7 +948,7 @@ function previewOwn(i){var x=ownRows[i];if(!x)return;var k=listings.findIndex(fu
 var activeDetail=-1,galleryIndex=0;function getImages(x){return x.images&&x.images.length?x.images:[]}
 function galleryHtml(x){var imgs=getImages(x);if(!imgs.length)return '<div class="detail-gallery-empty"><div><b>VP</b><span>Ei kuvaa</span></div></div>';var h='<div class="gallery-main-wrap"><img id="galleryMain" class="gallery-main" src="'+esc(imgs[0])+'" alt="'+esc(x.title)+'" onclick="openLightbox()">';if(imgs.length>1)h+='<button type="button" class="gallery-arrow gallery-prev" aria-label="Edellinen kuva" onclick="galleryStep(-1)">‹</button><button type="button" class="gallery-arrow gallery-next" aria-label="Seuraava kuva" onclick="galleryStep(1)">›</button>';h+='<span id="galleryCount" class="gallery-count">'+(imgs.length>1?'1 / '+imgs.length:'1 kuva')+'</span></div>';if(imgs.length>1){h+='<div class="gallery-thumbs">';for(var j=0;j<imgs.length;j++)h+='<button type="button" class="gallery-thumb '+(j===0?'active':'')+'" aria-label="Näytä kuva '+(j+1)+'" onclick="gallerySelect('+j+')"><img src="'+esc(imgs[j])+'" alt=""></button>';h+='</div>'}return h}
 function detailDate(v){if(!v)return '';var p=String(v).split('-');return p.length===3?p[2]+'.'+p[1]+'.'+p[0]:esc(v)}
-function isVpAdmin(){return !!(signedUser&&String(signedUser.email||'').trim().toLowerCase()==='jouni.a.tormanen@gmail.com')}
+function isVpAdmin(){return !!(signedUser&&['jouni.a.tormanen@gmail.com','vuokraporssi.info@gmail.com'].includes(String(signedUser.email||'').trim().toLowerCase()))}
 async function adminDeleteListing(k){
  var x=listings[k];if(!x||!isVpAdmin())return;
  if(!confirm('YLLÄPITÄJÄ: Poistetaanko ilmoitus "'+x.title+'" pysyvästi? Tätä ei voi perua.'))return;
