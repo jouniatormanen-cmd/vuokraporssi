@@ -648,6 +648,14 @@ color:#ffffff!important;-webkit-text-fill-color:#ffffff!important;opacity:1!impo
 background:#246b43!important;color:#fff!important;-webkit-text-fill-color:#fff!important;
 border:2px solid #bce7c8!important;
 }
+</style><style id="vp-own-wanted-action-visibility">
+#accountView #ownWantedListings button[data-own-wanted-edit],
+#accountView #ownWantedListings button[data-own-wanted-delete]{
+background:#f0f8f2!important;color:#153b27!important;-webkit-text-fill-color:#153b27!important;
+border:2px solid #79a58a!important;opacity:1!important;font-weight:700!important;
+}
+#accountView #ownWantedListings button[data-own-wanted-edit]:hover,
+#accountView #ownWantedListings button[data-own-wanted-delete]:hover{background:#d6ebdc!important}
 </style></head>
 <body>
 
@@ -892,7 +900,7 @@ el('cards').innerHTML=empty;var pager=el('vpListingPager');if(pager){pager.hidde
 
 var ownRows=[];
 var ownFilter='all';
-function showAccount(){if(!signedUser){openLogin();return}el('wantedView').style.display='none';el('wantedBrowseView').style.display='none';loadOwnRows();loadOwnWanted();el('homeView').style.display='none';el('createView').style.display='none';el('accountView').style.display='block';var hero=document.querySelector('.hero');if(hero)hero.style.display='none';closeDetail();renderOwnListings();window.scrollTo({top:0,behavior:'smooth'})}
+function showAccount(){closePostChoice();if(!signedUser){openLogin();return}el('wantedView').style.display='none';el('wantedBrowseView').style.display='none';loadOwnRows();loadOwnWanted();el('homeView').style.display='none';el('createView').style.display='none';el('accountView').style.display='block';var hero=document.querySelector('.hero');if(hero)hero.style.display='none';closeDetail();renderOwnListings();window.scrollTo({top:0,behavior:'smooth'})}
 function accountDemoListings(){return ownRows}
 function ownState(x,i){return x.status==='paused'?'paused':'active'}
 function setOwnFilter(v,btn){ownFilter=v;document.querySelectorAll('.account-filter').forEach(function(b){b.classList.toggle('active',b===btn)});renderOwnListings()}
@@ -1072,7 +1080,7 @@ async function deleteWanted(id){if(!signedUser||!confirm('Poistetaanko oma hakui
 document.getElementById('wantedForm').addEventListener('submit',async function(e){e.preventDefault();var st=document.getElementById('wantedStatus');if(!signedUser){st.textContent='Kirjaudu sisään ennen hakuilmoituksen julkaisua.';return}var f=e.currentTarget;if(!document.getElementById('wantedEmailConsent').checked){st.textContent='Vahvista sähköpostiosoitteen julkisuus ennen julkaisua.';document.getElementById('wantedEmailConsent').focus();return}if(f.elements.description.value.trim().length<5){st.textContent='Kuvaus on liian lyhyt. Kirjoita vähintään 5 merkkiä.';f.elements.description.focus();return}if(f.elements.title.value.trim().length<3){st.textContent='Otsikon tulee olla vähintään 3 merkkiä pitkä.';f.elements.title.focus();return}if(f.elements.location.value.trim().length<2){st.textContent='Kirjoita paikkakunta tai alue (vähintään 2 merkkiä).';f.elements.location.focus();return}var d={owner_id:signedUser.id,title:f.elements.title.value.trim(),kind:f.elements.type.value,location:f.elements.location.value.trim(),wanted_when:f.elements.when.value.trim(),budget_eur:f.elements.budget.value===''?null:Number(f.elements.budget.value),contact_email:signedUser.email,description:f.elements.description.value.trim()};if(f.elements.email.value.trim().toLowerCase()!==signedUser.email.toLowerCase()){st.textContent='Yhteyssähköpostin on oltava kirjautuneen käyttäjän vahvistettu sähköpostiosoite.';return}st.textContent='Julkaistaan hakuilmoitusta…';var isEdit=!!editingWantedId;var r=isEdit?await sbAuth.from('wanted_listings').update({title:d.title,kind:d.kind,location:d.location,wanted_when:d.wanted_when,budget_eur:d.budget_eur,description:d.description}).eq('id',editingWantedId).eq('owner_id',signedUser.id).select('id'):await sbAuth.from('wanted_listings').insert(d);if(r.error){st.textContent='Tallennus epäonnistui: '+r.error.message;return}if(isEdit&&(!r.data||!r.data.length)){st.textContent='Muokkausta ei vahvistettu tietokannassa.';return}editingWantedId=null;f.reset();f.querySelector('button[type=submit]').textContent='Jätä helppo hakuilmoitus';st.textContent=isEdit?'Hakuilmoituksen muutokset tallennettu.':'Hakuilmoitus julkaistu. Löydät sen Selaa hakuilmoituksia -osiosta.'});
 // Ensure wanted views never overlap the account screen.
 var originalShowAccount=showAccount;
-showAccount=function(){document.getElementById('wantedView').style.display='none';document.getElementById('wantedBrowseView').style.display='none';return originalShowAccount.apply(this,arguments)};
+showAccount=function(){closePostChoice();document.getElementById('wantedView').style.display='none';document.getElementById('wantedBrowseView').style.display='none';return originalShowAccount.apply(this,arguments)};
 var originalShowHome=showHome;showHome=function(){document.getElementById('wantedView').style.display='none';document.getElementById('wantedBrowseView').style.display='none';return originalShowHome.apply(this,arguments)};
 var originalShowCreate=showCreate;showCreate=function(){document.getElementById('wantedView').style.display='none';document.getElementById('wantedBrowseView').style.display='none';return originalShowCreate.apply(this,arguments)};
 </script><script>
