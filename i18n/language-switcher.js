@@ -32,19 +32,20 @@ function translate(){
    if(phrases[source])el.setAttribute(attr,lang==='fi'?source:phrases[source][lang==='en'?0:1]);
   }
  });
- const select=document.getElementById('vp-language');
- if(select)select.value=lang;
+ document.querySelectorAll('[data-vp-language-select]').forEach(select=>{select.value=lang;});
  processing=false;
 }
 function init(){
  const nav=document.querySelector('header .topnav')||document.querySelector('header');
  if(nav&&!document.getElementById('vp-language')){
   const select=document.createElement('select');
-  select.id='vp-language';select.setAttribute('aria-label','Kieli / Language / Språk');
+  select.id='vp-language';select.dataset.vpLanguageSelect='true';select.setAttribute('aria-label','Kieli / Language / Språk');
   select.style.cssText='width:auto;min-width:68px;max-width:75px;margin:0 4px;padding:7px;border-radius:9px;font-size:13px;flex-shrink:0';
   select.innerHTML='<option value="fi">FI</option><option value="en">EN</option><option value="sv">SV</option>';
   nav.appendChild(select);
-  select.addEventListener('change',()=>{lang=select.value;try{localStorage.setItem('vp-language',lang)}catch(e){}translate()});
+  const mobile=document.getElementById('mobileMenu');
+  if(mobile){const mobileSelect=select.cloneNode(true);mobileSelect.id='vp-language-mobile';mobileSelect.style.cssText='display:block;width:100%;max-width:100%;margin:8px 0 14px;padding:12px;font-size:16px';mobile.insertBefore(mobileSelect,mobile.firstChild);}
+  document.querySelectorAll('[data-vp-language-select]').forEach(el=>el.addEventListener('change',()=>{lang=el.value;try{localStorage.setItem('vp-language',lang)}catch(e){}translate()}));
  }
  translate();
  const observer=new MutationObserver(()=>{if(!processing)translate()});
