@@ -32,14 +32,20 @@ function translate(){
  if(observer)observer.disconnect();
  document.documentElement.lang=lang;
  document.title=lang==='fi'?'Vuokrapörssi – Älä osta. Vuokraa.':lang==='en'?"Vuokrapörssi – Don't buy. Rent.":'Vuokrapörssi – Köp inte. Hyr.';
+ // Keep stable Finnish values for options whose value is derived from their label.
+ document.querySelectorAll('select option:not([value])').forEach(option=>{
+  if(!option.dataset.vpOriginalValue)option.dataset.vpOriginalValue=option.textContent.trim();
+  option.value=option.dataset.vpOriginalValue;
+ });
  const walker=document.createTreeWalker(document.body,NodeFilter.SHOW_TEXT);
  while(walker.nextNode()){
   const node=walker.currentNode, parent=node.parentElement;
   if(!parent||parent.closest('script,style,svg,textarea,[contenteditable="true"]'))continue;
   const current=node.nodeValue,clean=current.trim();
   if(!clean)continue;
-  let source=originalText.get(node)||clean;
-  if(source!==clean && phrases[clean])source=clean;
+  const previous=originalText.get(node);
+  const expected=previous?(lang==='fi'?previous:phrases[previous]?.[lang==='en'?0:1]):null;
+  const source=previous && (clean===previous || clean===expected)?previous:clean;
   if(!phrases[source])continue;
   originalText.set(node,source);
   const value=lang==='fi'?source:phrases[source][lang==='en'?0:1];
