@@ -795,8 +795,9 @@ function syncLocationPickers(){buildVpPicker('regionPicker','regionFilter','Koko
 document.addEventListener('click',function(e){if(!e.target.closest('.vp-select'))closeVpSelects()});document.addEventListener('mousedown',function(e){if(!e.target.closest('.vp-select'))closeVpSelects()});
 function fillRegionSelect(id){var s=el(id);if(!s)return;Object.keys(finnishRegions).sort(function(a,b){return a.localeCompare(b,'fi')}).forEach(function(name){var o=document.createElement('option');o.value=name;o.textContent=name;s.appendChild(o)})}
 function fillCitySelect(regionId,cityId){var r=el(regionId),s=el(cityId);if(!r||!s)return;var region=r.value,current=s.value;s.innerHTML='<option value="">'+(region?'Valitse paikkakunta':'Valitse ensin maakunta')+'</option>';s.disabled=!region;if(!region)return;(finnishRegions[region]||[]).slice().sort(function(a,b){return a.localeCompare(b,'fi')}).forEach(function(name){var o=document.createElement('option');o.value=name;o.textContent=name;s.appendChild(o)});if((finnishRegions[region]||[]).indexOf(current)>=0)s.value=current}
-function renderCategoryCards(){var box=el('categoryCards');if(!box)return;var h='';for(var i=0;i<categoryTree.length;i++)h+='<button class="category-card" type="button" onclick="openCategory('+i+')"><span class="category-icon">'+categoryTree[i].icon+'</span><span class="category-name">'+esc(categoryTree[i].name)+'</span></button>';box.innerHTML=h}
-function openCategory(i){var x=categoryTree[i],p=el('categorySubpanel');if(!x||!p)return;var h='<div class="category-subhead"><strong>'+x.icon+' '+esc(x.name)+'</strong><button type="button" onclick="closeCategoryPanel()" aria-label="Sulje">×</button></div><div class="subcategory-buttons"><button type="button" onclick="pickCategory('+i+')">Kaikki: '+esc(x.name)+'</button>';for(var j=0;j<x.subs.length;j++)h+='<button type="button" onclick="pickSubcategory('+i+','+j+')">'+esc(x.subs[j])+'</button>';h+='</div>';p.innerHTML=h;p.style.display='block';p.scrollIntoView({behavior:'smooth',block:'nearest'})}
+function vpCategoryLabel(fi){var p=window.VP_PHRASES&&window.VP_PHRASES[fi];var l='fi';try{l=localStorage.getItem('vp-language')||'fi'}catch(e){}return p&&l!=='fi'?(p[l==='en'?0:1]||fi):fi}
+function renderCategoryCards(){var box=el('categoryCards');if(!box)return;var h='';for(var i=0;i<categoryTree.length;i++)h+='<button class="category-card" type="button" onclick="openCategory('+i+')"><span class="category-icon">'+categoryTree[i].icon+'</span><span class="category-name">'+esc(vpCategoryLabel(categoryTree[i].name))+'</span></button>';box.innerHTML=h}
+function openCategory(i){var x=categoryTree[i],p=el('categorySubpanel');if(!x||!p)return;var h='<div class="category-subhead"><strong>'+x.icon+' '+esc(vpCategoryLabel(x.name))+'</strong><button type="button" onclick="closeCategoryPanel()" aria-label="Sulje">×</button></div><div class="subcategory-buttons"><button type="button" onclick="pickCategory('+i+')">Kaikki: '+esc(x.name)+'</button>';for(var j=0;j<x.subs.length;j++)h+='<button type="button" onclick="pickSubcategory('+i+','+j+')">'+esc(vpCategoryLabel(x.subs[j]))+'</button>';h+='</div>';p.innerHTML=h;p.style.display='block';p.scrollIntoView({behavior:'smooth',block:'nearest'})}
 function closeCategoryPanel(){var p=el('categorySubpanel');if(p)p.style.display='none'}
 function pickCategory(i){showHome();setTimeout(function(){resetSearchForm();el('catFilter').value=categories[i];updateSearchSubcategories();var target=document.querySelector('.searchbox');if(target)target.scrollIntoView({behavior:'smooth',block:'start'})},0)}
 function pickSubcategory(i,j){showHome();setTimeout(function(){resetSearchForm();el('catFilter').value=categoryTree[i].name;updateSearchSubcategories();el('subcatFilter').value=categoryTree[i].subs[j];var target=document.querySelector('.searchbox');if(target)target.scrollIntoView({behavior:'smooth',block:'start'})},0)}
@@ -1435,7 +1436,11 @@ function init(){
   el.addEventListener('change',()=>{
    lang=el.value;
    try{localStorage.setItem('vp-language',lang)}catch(e){}
+   if(typeof closeMobileMenu==='function')closeMobileMenu();
+   if(typeof showHome==='function')showHome();
+   if(typeof renderCategoryCards==='function')renderCategoryCards();
    translate();
+   requestAnimationFrame(()=>{translate();window.scrollTo({top:0,behavior:'instant'});});
   });
  });
  translate();
