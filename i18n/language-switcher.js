@@ -4,9 +4,11 @@ const langs=['fi','en','sv'];
 let lang='fi';
 try{const saved=localStorage.getItem('vp-language');if(langs.includes(saved))lang=saved}catch(e){}
 const originalText=new WeakMap(),originalAttributes=new WeakMap();
-let processing=false;
+let processing=false, observer=null;
+const watchOptions={childList:true,characterData:true,subtree:true};
 function translate(){
  if(processing||!document.body)return;processing=true;
+ if(observer)observer.disconnect();
  document.documentElement.lang=lang;
  document.title=lang==='fi'?'Vuokrapörssi – Älä osta. Vuokraa.':lang==='en'?"Vuokrapörssi – Don't buy. Rent.":'Vuokrapörssi – Köp inte. Hyr.';
  const walker=document.createTreeWalker(document.body,NodeFilter.SHOW_TEXT);
@@ -34,6 +36,7 @@ function translate(){
  });
  document.querySelectorAll('[data-vp-language-select]').forEach(select=>{select.value=lang;});
  processing=false;
+ if(observer)observer.observe(document.body,watchOptions);
 }
 function init(){
  const nav=document.querySelector('header .topnav')||document.querySelector('header');
@@ -48,8 +51,8 @@ function init(){
   document.querySelectorAll('[data-vp-language-select]').forEach(el=>el.addEventListener('change',()=>{lang=el.value;try{localStorage.setItem('vp-language',lang)}catch(e){}translate()}));
  }
  translate();
- const observer=new MutationObserver(()=>{if(!processing)translate()});
- observer.observe(document.body,{childList:true,subtree:true});
+ observer=new MutationObserver(()=>{if(!processing)translate()});
+ observer.observe(document.body,watchOptions);
 }
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
 })();
