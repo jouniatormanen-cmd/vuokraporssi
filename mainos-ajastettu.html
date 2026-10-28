@@ -1,0 +1,18 @@
+<!doctype html><html lang="fi"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Vuokrapörssi – ajoitettu mainos</title><style>html,body{margin:0;background:#0b211e;height:100%;overflow:auto}iframe{display:block;border:0;width:100%;height:100svh;min-height:760px}</style><iframe id="ad" src="./mainos-esikatselu.html?v=16" title="Vuokrapörssi-mainos" allow="autoplay"></iframe><script>
+const frame=document.getElementById('ad');
+frame.addEventListener('load',()=>{
+ const w=frame.contentWindow,d=frame.contentDocument;
+ const starts=[0,3.05,5.2,7.85,10.05,15.05,19.45],total=28;
+ let timer=null,begin=0;
+ const scenes=[...d.querySelectorAll('.scene')],fill=d.getElementById('fill'),play=d.getElementById('play'),audio=d.getElementById('narrationAudio');
+ const voice=d.getElementById('voice');
+ function scene(i){w.n=i;scenes.forEach((s,k)=>s.classList.toggle('on',k===i))}
+ function stop(){if(timer){clearInterval(timer);timer=null}w.stopMusic();audio.pause();audio.currentTime=0;play.textContent='▶ Toista 28 s'}
+ function tick(){const sec=(performance.now()-begin)/1000;let i=0;for(let j=1;j<starts.length;j++)if(sec>=starts[j])i=j; if(w.n!==i)scene(i);fill.style.width=Math.min(100,sec/total*100)+'%';if(sec>=total)stop()}
+ play.onclick=()=>{if(timer){stop();return}w.startMusic();audio.currentTime=0;audio.muted=voice.getAttribute('aria-pressed')==='true';audio.play().catch(()=>{});scene(0);begin=performance.now();play.textContent='⏸ Pysäytä';timer=setInterval(tick,60)};
+ d.getElementById('prev').onclick=()=>{stop();scene(Math.max(0,w.n-1))};
+ d.getElementById('next').onclick=()=>{stop();scene(Math.min(6,w.n+1))};
+ voice.onclick=()=>{const muted=voice.getAttribute('aria-pressed')!=='true';voice.setAttribute('aria-pressed',String(muted));voice.textContent=muted?'🔇 Puhe pois':'🔊 Suomenkielinen naisääni';audio.muted=muted};
+ const note=d.querySelector('.note');if(note)note.textContent='Suomenkielisen naisäänen mukaan ajoitettu 28 sekunnin mainosesikatselu. Musiikki ja kuvat ovat ennallaan.';
+});
+</script></html>
