@@ -1416,10 +1416,10 @@ function translate(){
    if(!phrases[source]){
     if(parent.closest('.detail-description,.detail-summary h2,.card-body h3,.contact-box strong,input,textarea,[data-user-content]'))continue;
     if(lang!=='fi'){
-     const normalized=clean.replace(/\\s+/g,' ').trim();
+     const normalized=clean.replace(/\s+/g,' ').trim();
      let mapped=null;
-     if(/^(\\d+) ilmoitusta$/.test(normalized))mapped=normalized.replace(/ ilmoitusta$/,lang==='en'?' listings':' annonser');
-     else if(/^Sivu (\\d+) \\/ (\\d+)$/.test(normalized))mapped=normalized.replace(/^Sivu /,lang==='en'?'Page ':'Sida ');
+     if(/^(\d+) ilmoitusta$/.test(normalized))mapped=normalized.replace(/ ilmoitusta$/,lang==='en'?' listings':' annonser');
+     else if(/^Sivu (\d+) \/ (\d+)$/.test(normalized))mapped=normalized.replace(/^Sivu /,lang==='en'?'Page ':'Sida ');
      else if(/^Kaikki: /.test(normalized)){const name=normalized.slice(8);const entry=phrases[name];if(entry)mapped=(lang==='en'?'All: ':'Alla: ')+(entry[lang==='en'?0:1]||name);}
      else if(/^Haku: /.test(normalized))mapped=(lang==='en'?'Search: ':'Sökning: ')+normalized.slice(6);
      else if(/^(?:Alkaen |asti )/.test(normalized))mapped=normalized.replace(/^Alkaen /,lang==='en'?'From ':'Från ').replace(/^asti /,lang==='en'?'until ':'till ');
