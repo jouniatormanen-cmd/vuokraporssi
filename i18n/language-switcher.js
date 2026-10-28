@@ -1,6 +1,6 @@
 (function(){
 const phrases=window.VP_PHRASES||{};
-const langs=['fi','en','sv'];
+const langs=['fi','sv','en'];
 let lang='fi';
 try{const saved=localStorage.getItem('vp-language');if(langs.includes(saved))lang=saved}catch(e){}
 
@@ -25,6 +25,9 @@ window.alert=function(message){
 };
 
 const originalText=new WeakMap(),originalAttributes=new WeakMap();
+const reverse={en:new Map(),sv:new Map()};
+for(const [fi,pair] of Object.entries(phrases)){if(!Array.isArray(pair))continue;if(!reverse.en.has(pair[0]))reverse.en.set(pair[0],fi);if(!reverse.sv.has(pair[1]))reverse.sv.set(pair[1],fi)}
+function sourceText(value,previous){if(previous&&(value===previous||phrases[previous]?.includes(value)))return previous;if(phrases[value])return value;return reverse.en.get(value)||reverse.sv.get(value)||value;}
 let processing=false, observer=null;
 const watchOptions={childList:true,characterData:true,subtree:true};
 function translate(){
@@ -44,8 +47,7 @@ function translate(){
   const current=node.nodeValue,clean=current.trim();
   if(!clean)continue;
   const previous=originalText.get(node);
-  const expected=previous?(lang==='fi'?previous:phrases[previous]?.[lang==='en'?0:1]):null;
-  const source=previous && (clean===previous || clean===expected)?previous:clean;
+  const source=sourceText(clean,previous);
   if(!phrases[source])continue;
   originalText.set(node,source);
   const value=lang==='fi'?source:phrases[source][lang==='en'?0:1];
@@ -57,8 +59,8 @@ function translate(){
    if(!el.hasAttribute(attr))continue;
    let map=originalAttributes.get(el);if(!map){map={};originalAttributes.set(el,map)}
    const current=el.getAttribute(attr);
-   if(!map[attr])map[attr]=current;
-   const source=map[attr];
+   const source=sourceText(current,map[attr]);
+   map[attr]=source;
    if(phrases[source])el.setAttribute(attr,lang==='fi'?source:phrases[source][lang==='en'?0:1]);
   }
  });
@@ -72,7 +74,7 @@ function init(){
   const select=document.createElement('select');
   select.id='vp-language';select.dataset.vpLanguageSelect='true';select.setAttribute('aria-label','Kieli / Language / Språk');
   select.style.cssText='width:auto;min-width:68px;max-width:75px;margin:0 4px;padding:7px;border-radius:9px;font-size:13px;flex-shrink:0';
-  select.innerHTML='<option value="fi">FI</option><option value="en">EN</option><option value="sv">SV</option>';
+  select.innerHTML='<option value="fi">FI</option><option value="sv">SV</option><option value="en">EN</option>';
   nav.appendChild(select);
   const mobile=document.getElementById('mobileMenu');
   if(mobile){const mobileSelect=select.cloneNode(true);mobileSelect.id='vp-language-mobile';mobileSelect.style.cssText='display:block;width:100%;max-width:100%;margin:8px 0 14px;padding:12px;font-size:16px';mobile.insertBefore(mobileSelect,mobile.firstChild);}
