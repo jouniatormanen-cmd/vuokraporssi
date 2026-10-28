@@ -17,7 +17,8 @@ function translate(){
   if(!parent||parent.closest('script,style,svg,textarea,[contenteditable="true"]'))continue;
   const current=node.nodeValue,clean=current.trim();
   if(!clean)continue;
-  const source=originalText.get(node)||clean;
+  let source=originalText.get(node)||clean;
+  if(source!==clean && phrases[clean])source=clean;
   if(!phrases[source])continue;
   originalText.set(node,source);
   const value=lang==='fi'?source:phrases[source][lang==='en'?0:1];
