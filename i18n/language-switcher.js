@@ -27,7 +27,7 @@ window.alert=function(message){
 const originalText=new WeakMap(),originalAttributes=new WeakMap();
 const reverse={en:new Map(),sv:new Map()};
 for(const [fi,pair] of Object.entries(phrases)){if(!Array.isArray(pair))continue;if(!reverse.en.has(pair[0]))reverse.en.set(pair[0],fi);if(!reverse.sv.has(pair[1]))reverse.sv.set(pair[1],fi)}
-function sourceText(value,previous){if(previous&&(value===previous||phrases[previous]?.includes(value)))return previous;if(phrases[value])return value;return reverse.en.get(value)||reverse.sv.get(value)||value;}
+function sourceText(value,previous){if(previous&&(value===previous||phrases[previous]?.includes(value)))return previous;if(phrases[value])return value;const primary=lang==='en'?reverse.en:lang==='sv'?reverse.sv:null;const secondary=lang==='en'?reverse.sv:reverse.en;return (primary&&primary.get(value))||secondary.get(value)||value;}
 let processing=false, observer=null;
 const watchOptions={childList:true,characterData:true,subtree:true};
 function translate(){
