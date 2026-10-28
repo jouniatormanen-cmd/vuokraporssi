@@ -1,30 +1,54 @@
 (function(){
- const translations=window.VP_TRANSLATIONS;
- if(!translations)return;
- const keys={navBrowse:'browse',navWanted:'wanted',navCreate:'create',accountNav:'account',logoutNav:'logout'};
- const initial=localStorage.getItem('vp-language')||'fi';
- function apply(lang){
-  if(!translations[lang])lang='fi';
-  document.documentElement.lang=lang;
-  for(const [id,key] of Object.entries(keys)){
-   const element=document.getElementById(id);
-   if(element)element.textContent=translations[lang][key];
-  }
-  const selector=document.getElementById('vp-language');
-  if(selector)selector.value=lang;
-  localStorage.setItem('vp-language',lang);
+const phrases=window.VP_PHRASES||{};
+const langs=['fi','en','sv'];
+let lang='fi';
+try{const saved=localStorage.getItem('vp-language');if(langs.includes(saved))lang=saved}catch(e){}
+const originalText=new WeakMap(),originalAttributes=new WeakMap();
+let processing=false;
+function translate(){
+ if(processing||!document.body)return;processing=true;
+ document.documentElement.lang=lang;
+ document.title=lang==='fi'?'Vuokrapörssi – Älä osta. Vuokraa.':lang==='en'?"Vuokrapörssi – Don't buy. Rent.":'Vuokrapörssi – Köp inte. Hyr.';
+ const walker=document.createTreeWalker(document.body,NodeFilter.SHOW_TEXT);
+ while(walker.nextNode()){
+  const node=walker.currentNode, parent=node.parentElement;
+  if(!parent||parent.closest('script,style,svg,textarea,[contenteditable="true"]'))continue;
+  const current=node.nodeValue,clean=current.trim();
+  if(!clean)continue;
+  const source=originalText.get(node)||clean;
+  if(!phrases[source])continue;
+  originalText.set(node,source);
+  const value=lang==='fi'?source:phrases[source][lang==='en'?0:1];
+  if(value!==clean)node.nodeValue=current.replace(clean,value);
  }
- function init(){
-  const nav=document.querySelector('header .topnav');
-  if(!nav)return;
+ document.querySelectorAll('[placeholder],[aria-label],[title]').forEach(el=>{
+  if(el.closest('[contenteditable="true"]'))return;
+  for(const attr of ['placeholder','aria-label','title']){
+   if(!el.hasAttribute(attr))continue;
+   let map=originalAttributes.get(el);if(!map){map={};originalAttributes.set(el,map)}
+   const current=el.getAttribute(attr);
+   if(!map[attr])map[attr]=current;
+   const source=map[attr];
+   if(phrases[source])el.setAttribute(attr,lang==='fi'?source:phrases[source][lang==='en'?0:1]);
+  }
+ });
+ const select=document.getElementById('vp-language');
+ if(select)select.value=lang;
+ processing=false;
+}
+function init(){
+ const nav=document.querySelector('header .topnav')||document.querySelector('header');
+ if(nav&&!document.getElementById('vp-language')){
   const select=document.createElement('select');
-  select.id='vp-language';
-  select.setAttribute('aria-label','Kieli / Language / Språk');
-  select.style.cssText='width:auto;min-width:74px;margin:0 4px;padding:7px;border-radius:9px;font-size:13px';
+  select.id='vp-language';select.setAttribute('aria-label','Kieli / Language / Språk');
+  select.style.cssText='width:auto;min-width:68px;max-width:75px;margin:0 4px;padding:7px;border-radius:9px;font-size:13px;flex-shrink:0';
   select.innerHTML='<option value="fi">FI</option><option value="en">EN</option><option value="sv">SV</option>';
   nav.appendChild(select);
-  select.addEventListener('change',()=>apply(select.value));
-  apply(initial);
+  select.addEventListener('change',()=>{lang=select.value;try{localStorage.setItem('vp-language',lang)}catch(e){}translate()});
  }
- if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
+ translate();
+ const observer=new MutationObserver(()=>{if(!processing)translate()});
+ observer.observe(document.body,{childList:true,subtree:true});
+}
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
 })();
