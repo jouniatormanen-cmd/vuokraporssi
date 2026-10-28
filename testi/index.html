@@ -1393,7 +1393,8 @@ function translateDynamicUi(){if(processing)return;translate()}
 function sourceFor(value,old){
  if(old && (value===old || value===phrases[old]?.[0] || value===phrases[old]?.[1]))return old;
  if(Object.prototype.hasOwnProperty.call(phrases,value))return value;
- return reverse.en.get(value)||reverse.sv.get(value)||value;
+ const preferred=lang==='en'?reverse.en:lang==='sv'?reverse.sv:null;
+ return (preferred&&preferred.get(value))||(lang==='en'?reverse.sv.get(value):reverse.en.get(value))||value;
 }
 function translate(){
  if(processing||!document.body)return;
