@@ -3,6 +3,27 @@ const phrases=window.VP_PHRASES||{};
 const langs=['fi','en','sv'];
 let lang='fi';
 try{const saved=localStorage.getItem('vp-language');if(langs.includes(saved))lang=saved}catch(e){}
+
+// Translate known application alerts while retaining original error details.
+// Other alerts, including third-party messages, pass through unchanged.
+const alertPrefixes={
+ 'Hakuilmoitusta ei voitu avata: ':['Could not open rental request: ','Det gick inte att öppna sökannonsen: '],
+ 'Kirjautuminen onnistui, mutta ilmoituksen julkaisu epäonnistui: ':['Login succeeded, but publishing the listing failed: ','Inloggningen lyckades, men annonsen kunde inte publiceras: '],
+ ' Luonnos säilyy selaimessa.':[' The draft remains in your browser.',' Utkastet finns kvar i webbläsaren.'],
+ 'Kirjautumisen viimeistely epäonnistui: ':['Could not complete login: ','Det gick inte att slutföra inloggningen: '],
+ 'Sähköpostilinkki ei toiminut: ':['The email link did not work: ','E-postlänken fungerade inte: '],
+ 'Poisto epäonnistui: ':['Deletion failed: ','Raderingen misslyckades: ']
+};
+const nativeAlert=window.alert.bind(window);
+window.alert=function(message){
+ if(typeof message!=='string'||lang==='fi')return nativeAlert(message);
+ let translated=phrases[message]?.[lang==='en'?0:1]||message;
+ for(const [source,variants] of Object.entries(alertPrefixes)){
+  if(translated.includes(source))translated=translated.split(source).join(variants[lang==='en'?0:1]);
+ }
+ return nativeAlert(translated);
+};
+
 const originalText=new WeakMap(),originalAttributes=new WeakMap();
 let processing=false, observer=null;
 const watchOptions={childList:true,characterData:true,subtree:true};
