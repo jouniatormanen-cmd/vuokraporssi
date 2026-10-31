@@ -1484,7 +1484,7 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 #vpMessagePanel .vpMsg{padding:8px;border-bottom:1px solid #355244;white-space:pre-wrap;overflow-wrap:anywhere}
 </style>
 <div id="vpMessagePanel" role="dialog" aria-label="Vuokrapörssin viestit"><button type="button" onclick="vpCloseMessages()" style="float:right">Sulje</button><h3>Viestit – testiversio</h3><div id="vpMsgStatus"></div><div id="vpMsgHistory"></div><textarea id="vpMsgText" maxlength="3000" placeholder="Kirjoita viesti"></textarea><button type="button" onclick="vpSendMessage()">Lähetä</button><button type="button" onclick="vpOpenInbox()">Päivitä / Saapuneet</button></div>
-<button id="vpInboxButton" type="button" class="vpMessageButton" onclick="vpOpenInbox()" style="position:fixed;bottom:12px;left:12px;z-index:900">✉ Viestit</button>
+
 <script>
 (function(){
 let target=null,listing=null,wantedMode=false;
