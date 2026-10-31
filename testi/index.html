@@ -1501,6 +1501,10 @@ const observer=new MutationObserver(()=>{const box=document.querySelector('#deta
 })();
 </script>
 
+<style id="vpNewsFloatingStyle">
+#vpNewsFloat{position:fixed;right:16px;bottom:22px;z-index:900;border:1px solid #68ecaa;background:#133d29;color:#f4fff8;box-shadow:0 5px 22px rgba(0,0,0,.42);border-radius:999px;padding:12px 17px;font:700 14px system-ui,sans-serif;cursor:pointer;display:flex;align-items:center;gap:7px;max-width:calc(100vw - 32px)}#vpNewsFloat:hover,#vpNewsFloat:focus-visible{background:#23613f;outline:2px solid #91f6bb;outline-offset:2px}#vpNewsOverlay:not([hidden])~#vpNewsFloat{display:none}@media(max-width:540px){#vpNewsFloat{right:12px;bottom:16px;padding:11px 15px;font-size:13px}}
+</style>
+<button id="vpNewsFloat" type="button" onclick="vpOpenNews()" aria-label="Avaa uutiset">📰 Uutiset</button>
 <style id="vpNewsStyles">
 #vpNewsOverlay{position:fixed;inset:0;z-index:1100;background:rgba(3,12,8,.87);overflow-y:auto;padding:24px 12px}#vpNewsPanel{max-width:780px;margin:16px auto;background:#0d1b15;border:1px solid #315542;border-radius:18px;padding:20px;color:#f4fbf7}#vpNewsPanel h2{margin:0}#vpNewsPanel .vpNewsTools{display:flex;gap:8px;flex-wrap:wrap;margin:15px 0}#vpNewsPanel button{cursor:pointer;border:1px solid #47785a;border-radius:10px;padding:9px 12px;background:#193a2a;color:#fff}#vpNewsPanel button[aria-pressed="true"]{background:#43e38f;color:#07110d;font-weight:700}#vpNewsItems{display:grid;gap:8px}#vpNewsItems a{display:block;padding:13px;border:1px solid #2c4939;border-radius:10px;color:#f4fbf7;text-decoration:none}#vpNewsItems a:hover{border-color:#43e38f}#vpNewsItems small{display:block;color:#a9c0b2;margin-top:5px}#vpNewsClose{float:right}#vpNewsStatus{color:#bcd0c5;font-size:14px}
 </style>
